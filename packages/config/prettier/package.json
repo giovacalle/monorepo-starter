@@ -1,0 +1,19 @@
+{
+	"name": "@monorepo-starter/config-prettier",
+	"private": true,
+	"version": "1.0.0",
+	"type": "module",
+	"files": [
+		"base.js",
+		"web.js"
+	],
+	"exports": {
+		"./base": "./base.js",
+		"./web": "./web.js"
+	},
+	"devDependencies": {
+		"prettier": "latest",
+		"prettier-plugin-svelte": "^3.3.3",
+		"prettier-plugin-tailwindcss": "^0.6.11"
+	}
+}

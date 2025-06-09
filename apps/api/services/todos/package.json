@@ -1,0 +1,31 @@
+{
+	"name": "@monorepo-starter/api-services-todos",
+	"private": true,
+	"version": "1.0.0",
+	"scripts": {
+		"dev": "tsx watch -r dotenv/config src/index.ts",
+		"start": "node -r dotenv/config dist/index.js",
+		"build": "tsc && tsc-alias"
+	},
+	"devDependencies": {
+		"@monorepo-starter/config-eslint": "workspace:*",
+		"@monorepo-starter/config-ts": "workspace:*",
+		"@types/node": "^22.14.0",
+		"eslint": "^9.24.0",
+		"tsc-alias": "^1.8.16",
+		"tsx": "^4.7.1",
+		"typescript": "^5.8.3"
+	},
+	"dependencies": {
+		"@hono/node-server": "^1.14.0",
+		"@hono/swagger-ui": "^0.5.1",
+		"@hono/zod-validator": "^0.4.3",
+		"@monorepo-starter/db": "workspace:*",
+		"dotenv": "^16.4.7",
+		"hono": "^4.7.6",
+		"hono-openapi": "^0.4.6",
+		"zod": "^3.24.2",
+		"zod-openapi": "^4.2.4"
+	},
+	"packageManager": "pnpm@10.6.5"
+}

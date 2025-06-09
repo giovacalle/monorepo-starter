@@ -1,0 +1,42 @@
+{
+	"name": "monorepo-starter",
+	"private": true,
+	"version": "1.0.0",
+	"type": "module",
+	"description": "A monorepo starter with turborepo",
+	"license": "MIT",
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"esbuild"
+		]
+	},
+	"scripts": {
+		"dev": "turbo run dev",
+		"dev:filter": "turbo run dev --filter $1",
+		"build": "turbo run build",
+		"lint": "turbo run lint",
+		"format": "prettier --write .",
+		"docker-compose:up": "docker compose up --build && [ '$1' == '--init-db' ] && pnpm --filter @monorepo-starter/db db:init",
+		"docker-compose:down": "docker compose down"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^19.8.1",
+		"@commitlint/config-conventional": "^19.8.1",
+		"@monorepo-starter/config-eslint": "workspace:*",
+		"@monorepo-starter/config-prettier": "workspace:*",
+		"eslint": "^9.27.0",
+		"husky": "^9.1.7",
+		"lint-staged": "^15.5.2",
+		"prettier": "latest",
+		"prettier-plugin-svelte": "^3.4.0",
+		"prettier-plugin-tailwindcss": "^0.6.11",
+		"turbo": "^2.5.3"
+	},
+	"lint-staged": {
+		"**/*.{js,ts}": [
+			"prettier --write",
+			"eslint --fix"
+		]
+	},
+	"packageManager": "pnpm@10.6.5"
+}

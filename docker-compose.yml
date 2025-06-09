@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:15
+    container_name: db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: monorepo_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - monorepo-starter-data:/var/lib/postgresql/data
+
+volumes:
+  monorepo-starter-data:

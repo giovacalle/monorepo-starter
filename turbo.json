@@ -1,0 +1,24 @@
+{
+	"$schema": "https://turborepo.org/schema.json",
+	"globalEnv": [
+		"DATABASE_URL",
+		"AUTH_BASE_URL",
+		"TODOS_BASE_URL",
+		"AUTH_SECRET",
+		"CORS_ORIGINS",
+		"LEADING_DOMAIN",
+		"GOOGLE_CLIENT_ID",
+		"GOOGLE_CLIENT_SECRET"
+	],
+	"tasks": {
+		"build": {
+			"dependsOn": ["^build"],
+			"outputs": ["dist/**", "build/**"]
+		},
+		"dev": {
+			"cache": false,
+			"persistent": true
+		},
+		"lint": {}
+	}
+}

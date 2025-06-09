@@ -1,0 +1,108 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"common": {
+		"locales": {
+			"en": "English",
+			"it": "Italian"
+		},
+		"logIn": "Log in",
+		"logOut": "Log out",
+		"form": {
+			"fields": {
+				"email": {
+					"label": "Email",
+					"placeholder": "Enter your email"
+				}
+			}
+		}
+	},
+	"pages": {
+		"home": {
+			"hero": {
+				"chip": "Turborepo made easy",
+				"chargeYourMonorepo": "charge your",
+				"subtitle": "A starter kit for building high-performance applications with Turborepo. Scale your codebase using our optimized monorepo structure.",
+				"learnMore": "Learn more"
+			},
+			"features": {
+				"whatsIncluded": "What's included",
+				"whatYouNeed": "Everything you need to",
+				"buildAtScale": "build at scale",
+				"subtitle": "Our monorepo starter comes pre-configured with all the tools you need for a professional development workflow.",
+				"list": {
+					"development": {
+						"label": "Development",
+						"items": {
+							"ts": "Strongly typed JavaScript for better developer experience and fewer bugs.",
+							"eslint": "Static code analysis to identify problematic patterns and enforce code style.",
+							"prettier": "Opinionated code formatter to ensure consistent code style across your codebase."
+						}
+					},
+					"frontend": {
+						"label": "Frontend",
+						"items": {
+							"svelteKit": "The fastest way to build Svelte apps with filesystem-based routing and server-side rendering.",
+							"tailwind": "Utility-first CSS framework for rapidly building custom user interfaces.",
+							"bitsUI": "Unstyled, accessible UI components for Svelte with a focus on flexibility and developer experience."
+						}
+					},
+					"backend": {
+						"label": "Backend",
+						"items": {
+							"hono": "Ultrafast web framework for the Edges. Lightweight and performance-focused.",
+							"orval": "TypeScript client generator from OpenAPI specifications with runtime validation and type safety.",
+							"drizzle": "TypeScript ORM with a focus on type-safety, performance and developer experience.",
+							"tanstack": "Powerful asynchronous state management for fetching, caching, and updating server state."
+						}
+					},
+					"workflow": {
+						"label": "Workflow",
+						"items": {
+							"turborepo": "High-performance build system for JavaScript and TypeScript codebases with intelligent caching.",
+							"pnpm": "Fast, disk space efficient package manager with built-in monorepo support.",
+							"docker": "Containerized development environment for consistent development across all machines."
+						}
+					}
+				}
+			},
+			"contributions": {
+				"theJourney": "The Journey",
+				"continues": "continues",
+				"subtitle": "This starter kit is an evolving project. We're constantly working on improvements and welcome your feedback and contributions.",
+				"community": "Built by developers for developers. We believe in the power of community-driven development and welcome contributions of all kinds.",
+				"code": {
+					"label": "Code contributions",
+					"text": "Submit pull requests to fix bugs, add features, or improve documentation."
+				},
+				"feedback": {
+					"label": "Feedback & Ideas",
+					"text": "Share your thoughts, report issues, or suggest new features."
+				},
+				"spreadTheWord": {
+					"label": "Spread the word",
+					"text": "Help others discover this starter kit by sharing your experience."
+				}
+			}
+		},
+		"logIn": {
+			"title": "Welcome back",
+			"subtitle": "Sign in to start using your account.",
+			"sendOtp": "Send OTP",
+			"or": "or",
+			"continueWithGoogle": "Continue with Google",
+			"errors": {
+				"emailFormat": "Enter a valid email address",
+				"sendOtp": "Error sending OTP. Please try again."
+			}
+		},
+		"verifyOtp": {
+			"title": "Verify OTP",
+			"subtitle": "Enter the OTP code sent to your email address.",
+			"verify": "Verify OTP",
+			"errors": {
+				"otpFormat": "Invalid OTP",
+				"sendVerify": "Error verifying OTP. Please try again"
+			}
+		}
+	}
+}

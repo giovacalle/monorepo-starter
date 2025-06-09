@@ -1,0 +1,38 @@
+# Node.js dependencies
+node_modules/
+.pnpm-debug.log*
+
+# Logs
+logs/
+*.log
+
+# Output
+dist/
+build/
+out/
+.svelte-kit/
+
+# Turborepo cache
+.turbo/
+.cache/
+
+# Env
+.env.local
+.env.*.local
+
+# Editor directories and files
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# Typescript
+*.tsbuildinfo
+
+# custom files
+.todo
