@@ -2,6 +2,7 @@ import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { db } from '@monorepo-starter/db';
 import { emailOTP } from 'better-auth/plugins';
+import { sendLoginVerificationOtp } from '@monorepo-starter/transactional';
 
 export const auth = betterAuth({
 	baseURL: process.env.AUTH_BASE_URL,
@@ -12,9 +13,25 @@ export const auth = betterAuth({
 	trustedOrigins: process.env.CORS_ORIGINS!.split(','),
 	plugins: [
 		emailOTP({
-			sendVerificationOTP: async ({ email, otp }) => {
-				// TODO: Implement email sending logic here
-				console.log(`Sending OTP ${otp} to ${email}`);
+			sendVerificationOTP: async ({ email, otp }, req) => {
+				// tricky way to get the locale from the cookie
+				const paraglideLocale =
+					req?.headers
+						.get('cookie')
+						?.split(';')
+						.find((c) => c.trim().startsWith('PARAGLIDE_LOCALE='))
+						?.replace('PARAGLIDE_LOCALE=', '')
+						.trim()
+						.toLowerCase() ?? '';
+
+				const locale = ['it', 'en'].includes(paraglideLocale) ? paraglideLocale : 'en';
+
+				await sendLoginVerificationOtp({
+					to: email,
+					// @ts-expect-error ts here complains but we handled above
+					locale,
+					otp
+				});
 			}
 		})
 	],

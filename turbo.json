@@ -2,13 +2,16 @@
 	"$schema": "https://turborepo.org/schema.json",
 	"globalEnv": [
 		"DATABASE_URL",
+		"WEB_BASE_URL",
 		"AUTH_BASE_URL",
 		"TODOS_BASE_URL",
 		"AUTH_SECRET",
 		"CORS_ORIGINS",
 		"LEADING_DOMAIN",
 		"GOOGLE_CLIENT_ID",
-		"GOOGLE_CLIENT_SECRET"
+		"GOOGLE_CLIENT_SECRET",
+		"RESEND_API_KEY",
+		"FROM_EMAIL"
 	],
 	"tasks": {
 		"build": {
