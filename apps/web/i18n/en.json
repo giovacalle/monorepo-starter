@@ -5,103 +5,85 @@
 			"en": "English",
 			"it": "Italian"
 		},
-		"logIn": "Log in",
-		"logOut": "Log out",
+		"toggleTheme": "Toggle theme",
+		"signIn": "Sign in",
+		"signOut": "Sign out",
 		"form": {
+			"sending": "Sending...",
 			"fields": {
 				"email": {
 					"label": "Email",
-					"placeholder": "Enter your email"
+					"placeholder": "Enter your email",
+					"errors": {
+						"required": "Email is required",
+						"format": "Please enter a valid email address"
+					}
 				}
 			}
-		}
+		},
+		"loadMore": "Load more"
 	},
 	"pages": {
 		"home": {
-			"hero": {
-				"chip": "Turborepo made easy",
-				"chargeYourMonorepo": "charge your",
-				"subtitle": "A starter kit for building high-performance applications with Turborepo. Scale your codebase using our optimized monorepo structure.",
-				"learnMore": "Learn more"
+			"meta": {
+				"title": "Home"
 			},
-			"features": {
-				"whatsIncluded": "What's included",
-				"whatYouNeed": "Everything you need to",
-				"buildAtScale": "build at scale",
-				"subtitle": "Our monorepo starter comes pre-configured with all the tools you need for a professional development workflow.",
-				"list": {
-					"development": {
-						"label": "Development",
-						"items": {
-							"ts": "Strongly typed JavaScript for better developer experience and fewer bugs.",
-							"eslint": "Static code analysis to identify problematic patterns and enforce code style.",
-							"prettier": "Opinionated code formatter to ensure consistent code style across your codebase."
-						}
-					},
-					"frontend": {
-						"label": "Frontend",
-						"items": {
-							"svelteKit": "The fastest way to build Svelte apps with filesystem-based routing and server-side rendering.",
-							"tailwind": "Utility-first CSS framework for rapidly building custom user interfaces.",
-							"bitsUI": "Unstyled, accessible UI components for Svelte with a focus on flexibility and developer experience."
-						}
-					},
-					"backend": {
-						"label": "Backend",
-						"items": {
-							"hono": "Ultrafast web framework for the Edges. Lightweight and performance-focused.",
-							"orval": "TypeScript client generator from OpenAPI specifications with runtime validation and type safety.",
-							"drizzle": "TypeScript ORM with a focus on type-safety, performance and developer experience.",
-							"tanstack": "Powerful asynchronous state management for fetching, caching, and updating server state."
-						}
-					},
-					"workflow": {
-						"label": "Workflow",
-						"items": {
-							"turborepo": "High-performance build system for JavaScript and TypeScript codebases with intelligent caching.",
-							"pnpm": "Fast, disk space efficient package manager with built-in monorepo support.",
-							"docker": "Containerized development environment for consistent development across all machines."
-						}
+			"welcome": {
+				"title": "Welcome!",
+				"description": "Sign in to create and share posts with the community."
+			},
+			"posts": {
+				"createPost": {
+					"title": "Create a new post",
+					"placeholderCollapsed": "Start a new post...",
+					"placeholder": "What's on your mind?",
+					"submit": "Post",
+					"cancel": "Cancel",
+					"errors": {
+						"required": "Title and content are required",
+						"length": "Title and content must be at least 10 characters long each",
+						"generic": "An error occurred while creating the post. Please try again."
 					}
-				}
-			},
-			"contributions": {
-				"theJourney": "The Journey",
-				"continues": "continues",
-				"subtitle": "This starter kit is an evolving project. We're constantly working on improvements and welcome your feedback and contributions.",
-				"community": "Built by developers for developers. We believe in the power of community-driven development and welcome contributions of all kinds.",
-				"code": {
-					"label": "Code contributions",
-					"text": "Submit pull requests to fix bugs, add features, or improve documentation."
 				},
-				"feedback": {
-					"label": "Feedback & Ideas",
-					"text": "Share your thoughts, report issues, or suggest new features."
-				},
-				"spreadTheWord": {
-					"label": "Spread the word",
-					"text": "Help others discover this starter kit by sharing your experience."
+				"emptyState": {
+					"title": "No posts yet",
+					"description": "What are you waiting for? Start sharing your thoughts with the world!"
 				}
 			}
 		},
-		"logIn": {
+		"signIn": {
+			"meta": {
+				"title": "Sign in to your account"
+			},
 			"title": "Welcome back",
 			"subtitle": "Sign in to start using your account.",
-			"sendOtp": "Send OTP",
+			"submit": "Send login code",
 			"or": "or",
 			"continueWithGoogle": "Continue with Google",
 			"errors": {
-				"emailFormat": "Enter a valid email address",
-				"sendOtp": "Error sending OTP. Please try again."
+				"otp": "Error sending OTP. Please try again.",
+				"google": "Error signing in with Google. Please try again."
 			}
 		},
 		"verifyOtp": {
-			"title": "Verify OTP",
-			"subtitle": "Enter the OTP code sent to your email address.",
-			"verify": "Verify OTP",
+			"meta": {
+				"title": "Verify your OTP"
+			},
+			"title": "Check your email",
+			"subtitle": "Enter the 8-digit verification code we sent to {email}.",
+			"submit": "Verify code",
+			"resend": {
+				"label": "Didn't receive the code?",
+				"action": "Resend {time}",
+				"success": "OTP resent successfully. Please check your email.",
+				"error": "Error resending OTP. Please try again."
+			},
+			"backToSignIn": "Back to sign in",
 			"errors": {
-				"otpFormat": "Invalid OTP",
-				"sendVerify": "Error verifying OTP. Please try again"
+				"required": "OTP is required",
+				"length": "OTP must be exactly 8 digits",
+				"format": "OTP must contain only numbers",
+				"verification": "OTP verification failed, could be expired or invalid. Check your email and try again."
 			}
 		}
 	}

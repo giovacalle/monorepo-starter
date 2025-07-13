@@ -1,0 +1,14 @@
+{
+	"name": "@monorepo-starter/backend",
+	"private": true,
+	"version": "1.0.0",
+	"scripts": {
+		"build:emails": "mjml ./emails/*.mjml -o pb_hooks/views/emails"
+	},
+	"devDependencies": {
+		"mjml": "^4.15.3"
+	},
+	"dependencies": {
+		"unique-names-generator": "^4.7.1"
+	}
+}

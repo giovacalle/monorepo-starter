@@ -1,0 +1,27 @@
+<mjml>
+	<mj-body background-color="#f0f0f0">
+		<mj-wrapper padding="20px">
+			<mj-section background-color="#ffffff" padding="20px" border-radius="8px">
+				<mj-column>
+					<!-- Title -->
+					<mj-text font-size="22px" font-weight="bold" color="#333">{{.greeting}}</mj-text>
+
+					<!-- Content -->
+					<mj-text font-size="16px" color="#555" line-height="22px">
+						{{.hereYourOtp}}<strong>{{.otp}}</strong>
+					</mj-text>
+					<mj-text font-size="16px" color="#555" line-height="22px">
+						{{.notRequested}}
+					</mj-text>
+
+					<!-- Footer -->
+					<mj-divider border-color="#dddddd" />
+					<mj-text font-size="14px" color="#999" line-height="18px">
+						{{.thanks}}<br />
+						<em>{{.signature}}{{.appName}}</em>
+					</mj-text>
+				</mj-column>
+			</mj-section>
+		</mj-wrapper>
+	</mj-body>
+</mjml>

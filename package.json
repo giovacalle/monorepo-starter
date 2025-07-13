@@ -5,18 +5,19 @@
 	"type": "module",
 	"description": "A monorepo starter with turborepo",
 	"license": "MIT",
-	"pnpm": {
-		"onlyBuiltDependencies": [
-			"esbuild"
-		]
-	},
 	"scripts": {
 		"dev": "turbo run dev",
 		"dev:filter": "turbo run dev --filter $1",
 		"build": "turbo run build",
 		"lint": "turbo run lint",
 		"format": "prettier --write .",
-		"docker-compose:up": "docker compose up --build && [ '$1' == '--init-db' ] && pnpm --filter @monorepo-starter/db db:init",
+		"pocketbase:create-migration": "docker compose exec pocketbase /pb/pocketbase migrate create $1",
+		"pocketbase:migrate-up": "docker compose exec pocketbase /pb/pocketbase migrate up",
+		"pocketbase:migrate-down": "docker compose exec pocketbase /pb/pocketbase migrate down $1",
+		"pocketbase:migrate-collections": "docker compose exec pocketbase /pb/pocketbase migrate collections",
+		"pocketbase:history-sync": "docker compose exec pocketbase /pb/pocketbase migrate history-sync",
+		"pocketbase:copy-types": "docker compose cp pocketbase:/pb/pb_data/types.d.ts ./packages/backend/pb_data/types.d.ts",
+		"docker-compose:up": "docker compose up --detach --build && pnpm run pocketbase:copy-types",
 		"docker-compose:down": "docker compose down"
 	},
 	"devDependencies": {

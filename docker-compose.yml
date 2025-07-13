@@ -1,15 +1,17 @@
 services:
-  db:
-    image: postgres:15
-    container_name: db
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: monorepo_db
+  pocketbase:
+    image: monorepo-starter-pocketbase:0.28.4
+    build:
+      context: packages/backend
     ports:
-      - '5432:5432'
+      - '8080:8080'
+    env_file:
+      - ./packages/backend/.env
+      - ./packages/backend/.env.local
     volumes:
-      - monorepo-starter-data:/var/lib/postgresql/data
+      - ./packages/backend/pb_hooks:/pb/pb_hooks
+      - pb-data:/pb/pb_data
+    restart: unless-stopped
 
 volumes:
-  monorepo-starter-data:
+  pb-data:

@@ -5,16 +5,23 @@
 			"en": "Inglese",
 			"it": "Italiano"
 		},
-		"logIn": "Accedi",
-		"logOut": "Esci",
+		"toggleTheme": "Cambia tema",
+		"signIn": "Accedi",
+		"signOut": "Esci",
 		"form": {
+			"sending": "Invio in corso...",
 			"fields": {
 				"email": {
 					"label": "Email",
-					"placeholder": "Inserisci la tua email"
+					"placeholder": "Inserisci la tua email",
+					"errors": {
+						"required": "L'email è richiesta",
+						"format": "Inserisci un indirizzo email valido"
+					}
 				}
 			}
-		}
+		},
+		"loadMore": "Carica di più"
 	},
 	"pages": {
 		"home": {
@@ -84,24 +91,39 @@
 				}
 			}
 		},
-		"logIn": {
+		"signIn": {
+			"meta": {
+				"title": "Accedi al tuo account"
+			},
 			"title": "Bentornato",
 			"subtitle": "Accedi per iniziare a utilizzare il tuo account.",
-			"sendOtp": "Invia OTP",
+			"submit": "Invia codice di accesso",
 			"or": "oppure",
 			"continueWithGoogle": "Continua con Google",
 			"errors": {
-				"emailFormat": "Inserisci un indirizzo email valido",
-				"sendOtp": "Errore durante l'invio del OTP. Riprova."
+				"otp": "Errore durante l'invio del OTP. Riprova.",
+				"google": "Errore durante l'accesso con Google. Riprova."
 			}
 		},
 		"verifyOtp": {
-			"title": "Verifica OTP",
-			"subtitle": "Inserisci il codice OTP inviato al tuo indirizzo email.",
-			"verify": "Verifica OTP",
+			"meta": {
+				"title": "Verifica il tuo OTP"
+			},
+			"title": "Controlla la tua email",
+			"subtitle": "Inserisci il codice di verifica a 8 cifre che abbiamo inviato a {email}.",
+			"submit": "Verifica codice",
+			"resend": {
+				"label": "Non hai ricevuto il codice?",
+				"action": "Reinvia {time}",
+				"success": "OTP reinviato con successo. Controlla la tua email.",
+				"error": "Errore nel reinviare l'OTP. Riprova."
+			},
+			"backToSignIn": "Torna al login",
 			"errors": {
-				"otpFormat": "OTP non valido",
-				"sendVerify": "Errore durante la verifica del OTP. Riprova"
+				"required": "L'OTP è richiesto",
+				"length": "L'OTP deve essere di esattamente 8 cifre",
+				"format": "L'OTP deve contenere solo numeri",
+				"verification": "Verifica OTP fallita, potrebbe essere scaduto o non valido. Controlla la tua email e riprova."
 			}
 		}
 	}

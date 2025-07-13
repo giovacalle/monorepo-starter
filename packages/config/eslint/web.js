@@ -8,7 +8,7 @@ import prettier from 'eslint-config-prettier';
 
 /** @type {import("eslint").Linter.Config} */
 export default defineConfig([
-	ignoreRules,
+	...ignoreRules,
 	css.configs.recommended,
 	js.configs.recommended,
 	...ts.configs.recommended,
