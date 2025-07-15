@@ -39,7 +39,7 @@ import { todosCustomFetch } from './todos-custom-fetch';
  */
 export const getApiV1Todos = (params?: GetApiV1TodosParams, signal?: AbortSignal) => {
 	return todosCustomFetch<GetApiV1Todos200Item[]>({
-		url: 'http://localhost:4001/api/v1/todos',
+		url: `http://localhost:4001/api/v1/todos`,
 		method: 'GET',
 		params,
 		signal
@@ -47,7 +47,7 @@ export const getApiV1Todos = (params?: GetApiV1TodosParams, signal?: AbortSignal
 };
 
 export const getGetApiV1TodosQueryKey = (params?: GetApiV1TodosParams) => {
-	return ['http://localhost:4001/api/v1/todos', ...(params ? [params] : [])] as const;
+	return [`http://localhost:4001/api/v1/todos`, ...(params ? [params] : [])] as const;
 };
 
 export const getGetApiV1TodosQueryOptions = <
@@ -102,7 +102,7 @@ export function createGetApiV1Todos<
  */
 export const postApiV1Todos = (postApiV1TodosBody: PostApiV1TodosBody, signal?: AbortSignal) => {
 	return todosCustomFetch<PostApiV1Todos201>({
-		url: 'http://localhost:4001/api/v1/todos',
+		url: `http://localhost:4001/api/v1/todos`,
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		data: postApiV1TodosBody,

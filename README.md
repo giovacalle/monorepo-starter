@@ -82,7 +82,7 @@ In order to use `Google OAuth`, you will need to:
    - Click on **Create Credentials** and select **OAuth 2.0 Client IDs**.
    - Choose the application type (e.g., Web application).
    - Define **Authorized JavaScript origins** (`http://localhost:5173`).
-   - Define the **Authorized redirect URIs** (`http://localhost:4002/api/v1/auth/callback/google`).
+   - Define the **Authorized redirect URIs** (`http://localhost:4000/api/v1/callback/google`).
 
 4. Insert the **Client ID** and **Client Secret** into the env variables (`GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`).
 
