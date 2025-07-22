@@ -1,5 +1,18 @@
-import { boolean, index, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import {
+	boolean,
+	check,
+	index,
+	integer,
+	pgTable,
+	primaryKey,
+	serial,
+	smallint,
+	text,
+	timestamp
+} from 'drizzle-orm/pg-core';
+import { relations, sql } from 'drizzle-orm';
 
+// handle by better-auth
 export const user = pgTable(
 	'user',
 	{
@@ -8,10 +21,15 @@ export const user = pgTable(
 		email: text('email').notNull().unique(),
 		emailVerified: boolean('email_verified').default(false).notNull(),
 		image: text('image'),
+		username: text('username').notNull().unique(),
 		createdAt: timestamp('created_at').defaultNow().notNull(),
 		updatedAt: timestamp('updated_at').defaultNow().notNull()
 	},
-	(table) => [index('user_id_index').on(table.id), index('user_email_index').on(table.email)]
+	(table) => [
+		index('user_id_index').on(table.id),
+		index('user_email_index').on(table.email),
+		index('user_username_index').on(table.username)
+	]
 );
 
 export const session = pgTable(
@@ -65,16 +83,68 @@ export const verification = pgTable(
 	},
 	(table) => [index('verification_identifier_index').on(table.identifier)]
 );
+// end better-auth
 
-export const todos = pgTable(
-	'todos',
+export const posts = pgTable(
+	'posts',
 	{
 		id: serial('id').primaryKey(),
 		title: text('title').notNull(),
-		description: text('description'),
-		completed: boolean('completed').notNull().default(false),
+		content: text('content').notNull(),
+		authorId: text('author_id')
+			.notNull()
+			.references(() => user.id, { onDelete: 'cascade' }),
 		createdAt: timestamp('created_at').defaultNow().notNull(),
-		updatedAt: timestamp('updated_at')
+		updatedAt: timestamp('updated_at').defaultNow().notNull()
 	},
-	(table) => [index('todo_completed_index').on(table.completed)]
+	(table) => [index('posts_author_id_index').on(table.authorId)]
 );
+
+export const postsVotes = pgTable(
+	'posts_votes',
+	{
+		postId: integer('post_id')
+			.notNull()
+			.references(() => posts.id, { onDelete: 'cascade' }),
+		userId: text('user_id')
+			.notNull()
+			.references(() => user.id, { onDelete: 'cascade' }),
+		vote: smallint('vote').notNull(),
+		createdAt: timestamp('created_at').defaultNow().notNull(),
+		updatedAt: timestamp('updated_at').defaultNow().notNull()
+	},
+	(table) => [
+		primaryKey({ columns: [table.postId, table.userId] }),
+		index('posts_votes_post_id_index').on(table.postId),
+		index('posts_votes_user_id_index').on(table.userId),
+		check(
+			'posts_votes_vote_check',
+			sql`${table.vote} IN (1, -1)` // Ensure vote is either 1 (upvote) or -1 (downvote)
+		)
+	]
+);
+
+// relations
+export const userRelations = relations(user, ({ many }) => ({
+	posts: many(posts),
+	votes: many(postsVotes)
+}));
+
+export const postRelations = relations(posts, ({ one, many }) => ({
+	author: one(user, {
+		fields: [posts.authorId],
+		references: [user.id]
+	}),
+	votes: many(postsVotes)
+}));
+
+export const postsVotesRelations = relations(postsVotes, ({ one }) => ({
+	post: one(posts, {
+		fields: [postsVotes.postId],
+		references: [posts.id]
+	}),
+	user: one(user, {
+		fields: [postsVotes.userId],
+		references: [user.id]
+	})
+}));

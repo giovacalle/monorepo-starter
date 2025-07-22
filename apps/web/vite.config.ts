@@ -12,7 +12,9 @@ export default defineConfig({
 			outdir: './src/lib/paraglide',
 			// issue: https://github.com/opral/inlang-paraglide-js/issues/503
 			// strategy: ['url', 'cookie', 'globalVariable', 'baseLocale']
-			strategy: ['cookie', 'globalVariable', 'baseLocale']
+			strategy: ['cookie', 'globalVariable', 'baseLocale'],
+			cookieName: 'locale',
+			localStorageKey: 'locale'
 		})
 	]
 });

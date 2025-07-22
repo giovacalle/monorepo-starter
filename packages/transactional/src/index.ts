@@ -1,6 +1,6 @@
 import { Resend } from 'resend';
 import type { Locale } from '@/shared/types';
-import LoginVerificationOtpEmail from '@/emails/login-verification-otp';
+import LoginVerificationOtpEmail from '@/src/emails/login-verification-otp';
 
 const resend = new Resend(process.env.RESEND_API_KEY!);
 

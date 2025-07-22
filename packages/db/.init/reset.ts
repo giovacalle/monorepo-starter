@@ -1,11 +1,11 @@
 import 'dotenv/config';
-
 import { db } from '../src/db';
-import { todosTable } from '../src/schema';
+import * as schema from '../src/schema';
+import { reset } from 'drizzle-seed';
 
 async function main() {
 	console.log('Resetting database...');
-	await db.delete(todosTable);
+	await reset(db, schema);
 	console.log('Database reset successfully!');
 }
 

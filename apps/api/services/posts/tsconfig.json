@@ -1,0 +1,16 @@
+{
+	"extends": "@monorepo-starter/config-ts/base",
+	"include": ["src/**/*.ts"],
+	"compilerOptions": {
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"outDir": "dist",
+		"paths": {
+			"@/*": ["./src/*"],
+			"@shared/*": ["./src/shared/*"]
+		}
+	},
+	"tsc-alias": {
+		"resolveFullPaths": true
+	}
+}

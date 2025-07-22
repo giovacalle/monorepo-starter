@@ -5,103 +5,108 @@
 			"en": "Inglese",
 			"it": "Italiano"
 		},
-		"logIn": "Accedi",
-		"logOut": "Esci",
+		"toggleTheme": "Cambia tema",
+		"signIn": "Accedi",
+		"signOut": "Esci",
 		"form": {
+			"cancel": "Annulla",
+			"submitting": "Invio in corso...",
 			"fields": {
 				"email": {
 					"label": "Email",
-					"placeholder": "Inserisci la tua email"
+					"placeholder": "Inserisci la tua email",
+					"errors": {
+						"required": "L'email è obbligatoria",
+						"format": "Inserisci un indirizzo email valido"
+					}
+				},
+				"title": {
+					"label": "Titolo",
+					"placeholder": "Inserisci il titolo",
+					"errors": {
+						"required": "Il titolo è obbligatorio"
+					}
+				},
+				"content": {
+					"label": "Contenuto",
+					"placeholder": "Inserisci il contenuto",
+					"errors": {
+						"required": "Il contenuto è obbligatorio"
+					}
 				}
 			}
-		}
+		},
+		"loadMore": "Carica altro"
 	},
 	"pages": {
 		"home": {
-			"hero": {
-				"chip": "Turborepo reso facile",
-				"chargeYourMonorepo": "potenzia la tua",
-				"subtitle": "Un kit base per creare applicazioni ad alte prestazioni con Turborepo. Scala la tua codebase utilizzando la nostra struttura monorepo ottimizzata.",
-				"learnMore": "Scopri di più"
+			"meta": {
+				"title": "Home"
 			},
-			"features": {
-				"whatsIncluded": "Cosa è incluso",
-				"whatYouNeed": "Tutto l'essenziale per",
-				"buildAtScale": "costruire in grande",
-				"subtitle": "Il nostro starter monorepo è preconfigurato con tutti gli strumenti necessari per un flusso di lavoro di sviluppo professionale.",
-				"list": {
-					"development": {
-						"label": "Sviluppo",
-						"items": {
-							"ts": "JavaScript fortemente tipizzato per una migliore esperienza di sviluppo e meno bug.",
-							"eslint": "Analisi statica del codice per identificare pattern problematici e applicare lo stile del codice.",
-							"prettier": "Formattatore di codice opinionato per garantire uno stile di codice coerente in tutta la codebase."
-						}
-					},
-					"frontend": {
-						"label": "Frontend",
-						"items": {
-							"svelteKit": "Il modo più veloce per creare app Svelte con routing basato su filesystem e rendering lato server.",
-							"tailwind": "Framework CSS utility-first per creare rapidamente interfacce utente personalizzate.",
-							"bitsUI": "Componenti UI accessibili e non stilizzati per Svelte, con un focus sulla flessibilità e sull'esperienza di sviluppo."
-						}
-					},
-					"backend": {
-						"label": "Backend",
-						"items": {
-							"hono": "Framework web ultraveloce per gli Edge. Leggero e focalizzato sulle prestazioni.",
-							"orval": "Generatore di client TypeScript da specifiche OpenAPI con validazione runtime e sicurezza dei tipi.",
-							"drizzle": "ORM TypeScript con un focus sulla sicurezza dei tipi, sulle prestazioni e sull'esperienza di sviluppo.",
-							"tanstack": "Potente gestione asincrona dello stato per il recupero, la memorizzazione nella cache و l'aggiornamento dello stato del server."
-						}
-					},
-					"workflow": {
-						"label": "Flusso di lavoro",
-						"items": {
-							"turborepo": "Sistema di build ad alte prestazioni per codebase JavaScript e TypeScript con caching intelligente.",
-							"pnpm": "Gestore di pacchetti veloce ed efficiente in termini di spazio su disco con supporto monorepo integrato.",
-							"docker": "Ambiente di sviluppo containerizzato per uno sviluppo coerente su tutte le macchine."
-						}
+			"welcome": {
+				"title": "Benvenuto!",
+				"description": "Accedi per creare e condividere post con la community."
+			},
+			"posts": {
+				"createPost": {
+					"placeholderCollapsed": "Inizia un nuovo post...",
+					"submit": "Pubblica",
+					"errors": {
+						"generic": "Si è verificato un errore durante la creazione del post. Riprova."
 					}
-				}
-			},
-			"contributions": {
-				"theJourney": "Il viaggio",
-				"continues": "continua",
-				"subtitle": "Questo starter kit è un progetto in evoluzione. Lavoriamo costantemente per migliorarlo e accogliamo con favore i tuoi feedback e contributi.",
-				"community": "Creato da sviluppatori per sviluppatori. Crediamo nel potere dello sviluppo guidato dalla comunità e accogliamo contributi di ogni tipo.",
-				"code": {
-					"label": "Contribuisci al codice",
-					"text": "Invia pull request per correggere bug, aggiungere funzionalità o migliorare la documentazione."
 				},
-				"feedback": {
-					"label": "Feedback e idee",
-					"text": "Condividi i tuoi pensieri, segnala problemi o suggerisci nuove funzionalità."
+				"deletePost": {
+					"success": "Post eliminato con successo.",
+					"error": "Si è verificato un errore durante l'eliminazione del post. Riprova."
 				},
-				"spreadTheWord": {
-					"label": "Spargi la voce",
-					"text": "Aiuta gli altri a scoprire questo starter kit condividendo la tua esperienza."
+				"vote": {
+					"success": "Post votato con successo.",
+					"error": "Si è verificato un errore durante il voto del post. Riprova.",
+					"deleteSuccess": "Voto rimosso con successo.",
+					"deleteError": "Si è verificato un errore durante la rimozione del voto. Riprova."
+				},
+				"emptyState": {
+					"title": "Nessun post ancora",
+					"description": "Cosa aspetti? Inizia a condividere i tuoi pensieri con il mondo!"
+				},
+				"errors": {
+					"generic": "Si è verificato un errore durante il recupero dei post. Riprova."
 				}
 			}
 		},
-		"logIn": {
+		"signIn": {
+			"meta": {
+				"title": "Accedi al tuo account"
+			},
 			"title": "Bentornato",
-			"subtitle": "Accedi per iniziare a utilizzare il tuo account.",
-			"sendOtp": "Invia OTP",
+			"subtitle": "Accedi per iniziare a usare il tuo account.",
+			"submit": "Invia codice di accesso",
 			"or": "oppure",
 			"continueWithGoogle": "Continua con Google",
 			"errors": {
-				"emailFormat": "Inserisci un indirizzo email valido",
-				"sendOtp": "Errore durante l'invio del OTP. Riprova."
+				"otp": "Errore nell'invio dell'OTP. Riprova.",
+				"google": "Errore nell'accesso con Google. Riprova."
 			}
 		},
 		"verifyOtp": {
-			"title": "Verifica OTP",
-			"subtitle": "Inserisci il codice OTP inviato al tuo indirizzo email.",
-			"verify": "Verifica OTP",
+			"meta": {
+				"title": "Verifica il tuo OTP"
+			},
+			"title": "Controlla la tua email",
+			"subtitle": "Inserisci il codice di verifica a 8 cifre che ti abbiamo inviato a {email}.",
+			"submit": "Verifica codice",
+			"resend": {
+				"label": "Non hai ricevuto il codice?",
+				"action": "Invia nuovamente {time}",
+				"success": "OTP inviato nuovamente con successo. Controlla la tua email.",
+				"error": "Errore nel reinvio dell'OTP. Riprova."
+			},
+			"backToSignIn": "Torna all'accesso",
 			"errors": {
-				"otpFormat": "OTP non valido",
-				"sendVerify": "Errore durante la verifica del OTP. Riprova"
+				"required": "L'OTP è obbligatorio",
+				"length": "L'OTP deve essere esattamente di 8 cifre",
+				"format": "L'OTP deve contenere solo numeri",
+				"verification": "Verifica OTP fallita, potrebbe essere scaduto o non valido. Controlla la tua email e riprova."
 			}
 		}
 	}

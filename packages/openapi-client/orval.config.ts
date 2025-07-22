@@ -1,41 +1,26 @@
 import 'dotenv/config';
 import { defineConfig } from 'orval';
 
+const postsOpenApiUrl = process.env.POSTS_OPENAPI_URL;
+
+if (!postsOpenApiUrl) throw new Error('POSTS_OPENAPI_URL is not defined');
+
 export default defineConfig({
-	auth: {
+	posts: {
 		input: {
-			target: `${process.env.AUTH_BASE_URL}/api/v1/openapi`
+			target: postsOpenApiUrl
 		},
 		output: {
-			baseUrl: process.env.AUTH_BASE_URL,
-			target: 'src/gen/auth/auth.ts',
+			baseUrl: postsOpenApiUrl.substring(0, postsOpenApiUrl.indexOf('/api')),
+			target: 'src/gen/posts/posts.ts',
 			client: 'svelte-query',
 			mode: 'split',
 			prettier: true,
 			headers: true,
 			override: {
 				mutator: {
-					path: 'src/gen/auth/auth-custom-fetch.ts',
-					name: 'authCustomFetch'
-				}
-			}
-		}
-	},
-	todos: {
-		input: {
-			target: `${process.env.TODOS_BASE_URL}/api/v1/openapi`
-		},
-		output: {
-			baseUrl: process.env.TODOS_BASE_URL,
-			target: 'src/gen/todos/todos.ts',
-			client: 'svelte-query',
-			mode: 'split',
-			prettier: true,
-			headers: true,
-			override: {
-				mutator: {
-					path: 'src/gen/todos/todos-custom-fetch.ts',
-					name: 'todosCustomFetch'
+					path: 'src/gen/posts/custom-fetch.ts',
+					name: 'customFetch'
 				}
 			}
 		}

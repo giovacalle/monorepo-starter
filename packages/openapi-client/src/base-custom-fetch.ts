@@ -69,7 +69,6 @@ export const baseCustomFetch = async <T>({
 
 function getHeaders(headers: object): object {
 	const mapHeaders = new Map(Object.entries(headers));
-	mapHeaders.delete('Content-Type');
 	return Object.fromEntries(mapHeaders);
 }
 
