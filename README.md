@@ -38,72 +38,76 @@ packages/
   db/               # Drizzle schema and shared DB helpers
   openapi-client/   # API client generated with Orval
   transactional/    # Transactional email templates (react-email)
+  ui/               # Shared UI components (bits-ui, svelte)
 ```
 
 ## 🧪 Usage
 
 1. **Setup repository**
-
-- Click `use this template`, then **[create a new repository](https://github.com/new?template_name=monorepo-starter&template_owner=giovacalle)**, and clone it to your local machine
-- Run `pnpm install` to install dependencies
+   - Click `use this template`, then **[create a new repository](https://github.com/new?template_name=monorepo-starter&template_owner=giovacalle)**, and clone it to your local machine
+   - Run `pnpm install` to install dependencies
 
 2. **Local development**
+   - **Start individual apps:**
 
-- Start the single app(s):  
-  `pnpm dev:filter @monorepo-starter/web`<br />
-  `pnpm dev:filter @monorepo-starter/api-services-posts`<br />
-  `...`
+     ```bash
+     # start web app
+     pnpm dev --filter=@monorepo-starter/web
 
-- With Docker (for local db instance)
+     # start API services
+     pnpm dev --filter=@monorepo-starter/api-services-posts
+     # p.s. you can also run all api services at once with:
+     pnpm dev-all-apis
+     ```
 
-  - Start Docker containers (there is a docker-compose.yml file in the root):
-    `pnpm docker-compose:up`
+   - **Set up local database:**
 
-    p.s.: you can also add `--init-db` to initialize the database with some fake data
+     ```bash
+     # start PostgreSQL in Docker
+     pnpm docker-compose:up
+
+     # Or with sample data initialization
+     pnpm docker-compose:up --init-db
+     ```
 
 3. **Google OAuth**
 
-In order to use `Google OAuth`, you will need to:
+   In order to use `Google OAuth`, you will need to:
+   1. **Create a Google Cloud Project**
+      - Go to the [Google Cloud Console](https://console.cloud.google.com/).
+      - Create a new project or select an existing one.
 
-1. **Create a Google Cloud Project**
+   2. **Enable OAuth 2.0 API**
+      - Navigate to the API & Services section.
+      - Click on **Library** and search for "Google Identity Services".
+      - Enable the **Google Identity Services API** for your project.
 
-   - Go to the [Google Cloud Console](https://console.cloud.google.com/).
-   - Create a new project or select an existing one.
+   3. **Create OAuth 2.0 Credentials**
+      - Go to **APIs & Services** > **Credentials**.
+      - Click on **Create Credentials** and select **OAuth 2.0 Client IDs**.
+      - Choose the application type (e.g., Web application).
+      - Define **Authorized JavaScript origins** (`http://localhost:5173`).
+      - Define the **Authorized redirect URIs** (`http://localhost:4000/api/v1/callback/google`) (pocketbase route that handles the OAuth2 redirect).
 
-2. **Enable OAuth 2.0 API**
+   4. Insert the **Client ID** and **Client Secret** into the environment variables (`GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`) (in pocketbase env file).
 
-   - Navigate to the API & Services section.
-   - Click on **Library** and search for "Google Identity Services".
-   - Enable the **Google Identity Services API** for your project.
+4. **Email templates**
 
-3. **Create OAuth 2.0 Credentials**
+   In `transactional` package, you can find the email templates built with [react-email](https://react.email/).
+   For the sake of simplicity, Resend is used as the email service, but you can adapt it to your preferred service.
 
-   - Go to **APIs & Services** > **Credentials**.
-   - Click on **Create Credentials** and select **OAuth 2.0 Client IDs**.
-   - Choose the application type (e.g., Web application).
-   - Define **Authorized JavaScript origins** (`http://localhost:5173`).
-   - Define the **Authorized redirect URIs** (`http://localhost:4000/api/v1/callback/google`).
+   In order to use [Resend](https://resend.com), you will need to:
+   1. Create an account
 
-4. Insert the **Client ID** and **Client Secret** into the env variables (`GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`).
+   2. Define the domain from which to send emails (follow [Resend docs](https://resend.com/docs/dashboard/domains/introduction))
 
-5. **Email templates**
+   3. Generate an API key and insert it into the `RESEND_API_KEY` env variable
 
-In `transactional` package, you can find the email templates built with [react-email](https://react.email/).
-For the sake of simplicity, Resend is used as the email service, but you can adapt it to your preferred service.
-
-In order to use [Resend](https://resend.com), you will need to:
-
-1. Create an account
-
-2. Define the domain from which to send emails (follow [Resend docs](https://resend.com/docs/dashboard/domains/introduction))
-
-3. Generate an API key and insert it into the `RESEND_API_KEY` env variable
-
-4. In the `FROM_EMAIL` env variable, insert the email address from which emails will be sent (in the templates you will see that the `from` field is optional, so you can customize it as needed. By default, it will use the `FROM_EMAIL` variable)
+   4. In the `FROM_EMAIL` env variable, insert the email address from which emails will be sent (in the templates you will see that the `from` field is optional, so you can customize it as needed. By default, it will use the `FROM_EMAIL` variable)
 
 5. **Build and deploy**
 
-For this type of projects I really like to use [Railway](https://railway.app/), that is very integrated with Docker and GitHub CI/CD, but you can also use your preferred cloud provider.
+   For this type of projects I really like to use [Railway](https://railway.app/), that is very integrated with Docker and GitHub CI/CD, but you can also use your preferred cloud provider.
 
 ## 📚 Resources
 

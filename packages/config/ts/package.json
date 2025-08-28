@@ -2,10 +2,6 @@
 	"name": "@monorepo-starter/config-ts",
 	"private": true,
 	"version": "1.0.0",
-	"files": [
-		"base.json",
-		"svelte.json"
-	],
 	"exports": {
 		"./base": "./base.json",
 		"./svelte": "./svelte.json"
