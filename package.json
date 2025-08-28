@@ -17,7 +17,8 @@
 		"lint": "turbo run lint",
 		"format": "prettier --write .",
 		"docker-compose:up": "docker compose up --build && [ '$1' == '--init-db' ] && pnpm --filter @monorepo-starter/db db:init",
-		"docker-compose:down": "docker compose down"
+		"docker-compose:down": "docker compose down",
+		"dev-all-apis": "pnpm --filter './apps/api/services/*' dev"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^19.8.1",

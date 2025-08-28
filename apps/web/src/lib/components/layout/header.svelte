@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Avatar, Button, DropdownMenu } from '$lib/components/ui';
+	import { Avatar, Button, DropdownMenu } from '@monorepo-starter/ui';
 	import Icon from '@iconify/svelte';
 	import { toggleMode } from 'mode-watcher';
 	import { m } from '$lib/paraglide/messages';

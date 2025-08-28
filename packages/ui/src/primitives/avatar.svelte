@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { cn } from '$lib/utils/styles';
 	import { Avatar, type WithoutChildrenOrChild } from 'bits-ui';
+	import { cn } from '../lib/utils';
 
 	interface Props extends WithoutChildrenOrChild<Avatar.RootProps> {
 		size?: 'sm' | 'md' | 'lg';

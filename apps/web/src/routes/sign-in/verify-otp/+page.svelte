@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { Card, Button } from '$lib/components/ui';
+	import { Card, Button, PinInput } from '@monorepo-starter/ui';
 	import Header from '$lib/components/layout/header.svelte';
 	import Icon from '@iconify/svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { superForm } from 'sveltekit-superforms';
 	import { valibot } from 'sveltekit-superforms/adapters';
 	import { verifyOtpSchema, type VerifyOtpForm } from './form-schema';
-	import { PinInput, REGEXP_ONLY_DIGITS, type PinInputRootSnippetProps } from 'bits-ui';
 	import { cn } from '$lib/utils/styles';
 	import { useCountdownTimer } from '$lib/hooks/useCountdownTimer.svelte';
 	import { page } from '$app/state';
@@ -100,7 +99,7 @@
 						bind:value={$form.otp}
 						class="group/pininput text-foreground flex items-center justify-center has-disabled:opacity-30"
 						maxlength={8}
-						pattern={REGEXP_ONLY_DIGITS}>
+						pattern={PinInput.REGEXP_ONLY_DIGITS}>
 						{#snippet children({ cells })}
 							<div class="flex">
 								{#each cells.slice(0, 4) as cell, i (i)}
@@ -162,19 +161,8 @@
 	</Card>
 </main>
 
-{#snippet Cell(cell: PinInputRootSnippetProps['cells'][0])}
-	<PinInput.Cell
-		{cell}
-		class={cn(
-			'focus-override',
-			'relative h-14 w-10 text-3xl',
-			'flex items-center justify-center',
-			'transition-all duration-75',
-			'border-foreground/20 border-y border-r first:rounded-l-md first:border-l last:rounded-r-md',
-			'text-foreground group-focus-within/pininput:border-foreground/40 group-hover/pininput:border-foreground/40',
-			'outline-0',
-			'data-active:outline-contrast data-active:outline-1'
-		)}>
+{#snippet Cell(cell: PinInput.PinInputRootSnippetProps['cells'][0])}
+	<PinInput.Cell {cell}>
 		{#if cell.char !== null}
 			<div>
 				{cell.char}

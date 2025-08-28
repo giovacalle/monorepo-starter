@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Header from '$lib/components/layout/header.svelte';
 	import CreatePost from '$lib/components/features/posts/create-post.svelte';
-	import { Button, Card } from '$lib/components/ui';
+	import { Button, Card } from '@monorepo-starter/ui';
 	import Icon from '@iconify/svelte';
 	import { m } from '$lib/paraglide/messages';
 	import PostCard from '$lib/components/features/posts/post-card.svelte';
@@ -97,7 +97,7 @@
 			</div>
 
 			<!-- Pagination (to be implemented) -->
-				<!-- <div class="flex justify-center">
+			<!-- <div class="flex justify-center">
 					<Button
 						variant="outline"
 						size="sm"

@@ -9,3 +9,4 @@ export { default as Label } from './label.svelte';
 // Complex UI Components
 export * as DropdownMenu from './dropdown-menu';
 export * as Select from './select';
+export * as PinInput from './pin-input';

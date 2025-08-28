@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, Button, Label, Input } from '$lib/components/ui';
+	import { Card, Button, Label, Input } from '@monorepo-starter/ui';
 	import Header from '$lib/components/layout/header.svelte';
 	import Icon from '@iconify/svelte';
 	import { m } from '$lib/paraglide/messages';

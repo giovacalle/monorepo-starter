@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { authClient } from '$lib/auth/client';
-	import { Avatar, Button, Card } from '$lib/components/ui';
+	import { Avatar, Button, Card } from '@monorepo-starter/ui';
 	import { m } from '$lib/paraglide/messages';
 	import { cn } from '$lib/utils/styles';
 	import Icon from '@iconify/svelte';

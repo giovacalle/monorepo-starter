@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Select } from '$lib/components/ui';
+	import { Select } from '@monorepo-starter/ui';
 	import { setLocale, getLocale, locales } from '$lib/paraglide/runtime';
 	import Icon from '@iconify/svelte';
 	import { m } from '$lib/paraglide/messages';
@@ -11,7 +11,7 @@
 		setLocale(v as keyof typeof locales.keys);
 	}}
 	items={locales.map((l) => ({ label: l, value: l }))}>
-	<Select.Trigger class="hover:bg-muted fixed left-4 bottom-4 z-50 rounded-full p-2">
+	<Select.Trigger class="hover:bg-muted fixed bottom-4 left-4 z-50 rounded-full p-2">
 		<Icon icon={`circle-flags:${getLocale()}`} width={20} height={20} />
 	</Select.Trigger>
 	<Select.Portal>

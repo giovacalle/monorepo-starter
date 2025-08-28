@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Card, Input, Label, Textarea } from '$lib/components/ui';
+	import { Button, Card, Input, Label, Textarea } from '@monorepo-starter/ui';
 	import { m } from '$lib/paraglide/messages';
 	import { superForm } from 'sveltekit-superforms';
 	import { valibot } from 'sveltekit-superforms/adapters';
