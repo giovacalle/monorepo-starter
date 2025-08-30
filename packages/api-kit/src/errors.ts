@@ -1,3 +1,5 @@
+import { ContentfulStatusCode } from 'hono/utils/http-status';
+
 // Common error codes definition
 export enum ErrorCode {
 	BAD_REQUEST = 'BAD_REQUEST',
@@ -43,7 +45,7 @@ export class AppError extends Error {
 
 	constructor(
 		public readonly code: string,
-		public readonly status: number,
+		public readonly status: ContentfulStatusCode,
 		message?: string,
 		public readonly meta: ErrorMeta = {}
 	) {

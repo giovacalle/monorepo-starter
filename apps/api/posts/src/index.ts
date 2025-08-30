@@ -1,5 +1,11 @@
 import { Hono } from 'hono';
-import { cors } from 'hono/cors';
+import {
+	createCorsMiddleware,
+	createRequestIdMiddleware,
+	createTimeoutMiddleware,
+	createSecurityMiddleware,
+	createRateLimitMiddleware
+} from '@monorepo-starter/api-kit/middlewares';
 import { openAPISpecs } from 'hono-openapi';
 import { swaggerUI } from '@hono/swagger-ui';
 import { postsRouter } from './routes/posts/_router';
@@ -10,14 +16,21 @@ const app = new Hono().basePath('/api/v1');
 
 app.notFound((c) => c.json({ message: 'Not Found' }, 404));
 
+app.use('*', createRequestIdMiddleware());
+app.use('*', createSecurityMiddleware());
 app.use(
 	'*',
-	cors({
-		origin: process.env.TRUSTED_ORIGINS!.split(','),
-		allowHeaders: ['Content-Type', 'Authorization'],
-		allowMethods: ['POST', 'GET', 'OPTIONS', 'PATCH', 'DELETE'],
-		exposeHeaders: ['Content-Length'],
-		maxAge: 600
+	createCorsMiddleware({
+		credentials: true
+	})
+);
+app.use('*', createTimeoutMiddleware());
+app.use(
+	'*',
+	createRateLimitMiddleware({
+		service: 'posts',
+		windowMs: 60 * 1000, // 1 minute,
+		max: 60 // max 1 request per second
 	})
 );
 

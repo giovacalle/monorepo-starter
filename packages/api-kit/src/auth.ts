@@ -1,8 +1,8 @@
 import { session, user } from '@monorepo-starter/db/schema';
 import { Session, User } from '@monorepo-starter/db/types';
 import { db, and, eq, gte } from '@monorepo-starter/db';
-import { withErrorHandling } from '../errors';
-import { kvGet } from '../kv';
+import { withErrorHandling } from './errors';
+import { kvGet } from './kv';
 
 export function kvSessionKey(token: string) {
 	return `sess:${token}`;

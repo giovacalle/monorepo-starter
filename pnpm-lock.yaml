@@ -227,6 +227,9 @@ importers:
       '@monorepo-starter/db':
         specifier: workspace:*
         version: link:../db
+      hono:
+        specifier: ^4.7.6
+        version: 4.7.10
       ioredis:
         specifier: ^5.7.0
         version: 5.7.0

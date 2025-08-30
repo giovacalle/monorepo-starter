@@ -1,4 +1,5 @@
-import { getKV, kvSessionKey } from '@monorepo-starter/api-kit';
+import { getKV } from '@monorepo-starter/api-kit/kv';
+import { kvSessionKey } from '@monorepo-starter/api-kit/auth';
 import { db, eq } from '@monorepo-starter/db';
 import { user as users } from '@monorepo-starter/db/schema';
 import { betterAuth } from 'better-auth';

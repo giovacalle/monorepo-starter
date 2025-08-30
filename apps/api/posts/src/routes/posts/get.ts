@@ -2,7 +2,7 @@ import * as v from 'valibot';
 import { Hono } from 'hono';
 import { describeRoute } from 'hono-openapi';
 import { resolver, validator } from 'hono-openapi/valibot';
-import { getSessionByToken } from '@monorepo-starter/api-kit';
+import { getSessionByToken } from '@monorepo-starter/api-kit/auth';
 import { db, and, eq, desc } from '@monorepo-starter/db';
 import { user, posts, postsVotes } from '@monorepo-starter/db/schema';
 import {
