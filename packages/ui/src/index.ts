@@ -1,5 +1,5 @@
 // Re-export primitives
-export * from './primitives/index.js';
+export * from './components/primitives/index.js';
 
 // Utilities
 export { cn } from './lib/utils.js';

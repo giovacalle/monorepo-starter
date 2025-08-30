@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { PinInput } from 'bits-ui';
-	import { cn } from '../../lib/utils';
+	import { cn } from '../../../lib/utils';
 
 	interface Props extends PinInput.RootProps {}
 
