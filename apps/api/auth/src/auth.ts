@@ -1,3 +1,4 @@
+import { getKV, kvSessionKey } from '@monorepo-starter/api-kit';
 import { db, drizzle, schema } from '@monorepo-starter/db';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
@@ -11,12 +12,29 @@ import {
 	NumberDictionary
 } from 'unique-names-generator';
 
+const redis = getKV();
+
 export const auth = betterAuth({
 	baseURL: process.env.AUTH_BASE_URL,
 	basePath: process.env.AUTH_BASE_PATH,
 	database: drizzleAdapter(db, {
 		provider: 'pg'
 	}),
+	secondaryStorage: {
+		get: async (key) => {
+			return await redis.get(kvSessionKey(key));
+		},
+		set: async (key, value, ttl) => {
+			if (ttl) await redis.set(kvSessionKey(key), value, 'EX', ttl);
+			else await redis.set(kvSessionKey(key), value);
+		},
+		delete: async (key) => {
+			await redis.del(kvSessionKey(key));
+		}
+	},
+	session: {
+		storeSessionInDatabase: true
+	},
 	user: {
 		additionalFields: {
 			username: {
@@ -77,11 +95,6 @@ export const auth = betterAuth({
 					};
 				}
 			}
-		}
-	},
-	session: {
-		cookieCache: {
-			enabled: true
 		}
 	},
 	plugins: [

@@ -9,7 +9,7 @@ FROM base AS pruner
 WORKDIR /app
 
 COPY . .
-RUN turbo prune --scope=@monorepo-starter/api-services-posts --docker
+RUN turbo prune --scope=@monorepo-starter/api-posts --docker
 
 FROM base AS builder
 WORKDIR /app
@@ -25,7 +25,7 @@ RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store pnpm install --frozen-lockfi
 # Copy source code of isolated subworkspace
 COPY --from=pruner /app/out/full/ .
 
-RUN turbo build --filter=@monorepo-starter/api-services-posts
+RUN turbo build --filter=@monorepo-starter/api-posts
 RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store pnpm prune --prod --no-optional
 
 FROM slim AS runner
@@ -37,7 +37,7 @@ USER hono
 WORKDIR /app
 COPY --from=builder --chown=hono:nodejs /app .
 
-WORKDIR /app/apps/api/services/posts
+WORKDIR /app/apps/api/posts
 
 ARG DATABASE_URL
 ARG PORT

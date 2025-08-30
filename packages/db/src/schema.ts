@@ -126,8 +126,16 @@ export const postsVotes = pgTable(
 
 // relations
 export const userRelations = relations(user, ({ many }) => ({
+	sessions: many(session),
 	posts: many(posts),
 	votes: many(postsVotes)
+}));
+
+export const sessionRelations = relations(session, ({ one }) => ({
+	user: one(user, {
+		fields: [session.userId],
+		references: [user.id]
+	})
 }));
 
 export const postRelations = relations(posts, ({ one, many }) => ({

@@ -2,34 +2,30 @@ import { Hono } from 'hono';
 import * as v from 'valibot';
 import { describeRoute } from 'hono-openapi';
 import { resolver, validator } from 'hono-openapi/valibot';
-import { db, drizzle, schema } from '@monorepo-starter/db';
+import { getSessionByToken } from '@monorepo-starter/api-kit';
+import { db, schema } from '@monorepo-starter/db';
 import {
 	authHeaderSchema,
 	badRequestResponseSchema,
-	notAuthorizedResponseSchema,
-	notFoundResponseSchema
+	notAuthorizedResponseSchema
 } from '@/shared/schemas';
 
 const bodySchema = v.object({
-	postId: v.pipe(
-		v.number(),
-		v.integer('Post ID must be an integer'),
-		v.minValue(1, 'Post ID must be at least 1')
-	),
-	vote: v.picklist(['upvote', 'downvote'])
+	title: v.string(),
+	content: v.string()
 });
 
 const responseSchema = v.object({
-	updatedAt: v.string()
+	id: v.number()
 });
 
-export const postPostsVotesRouter = new Hono();
+export const postPostsRouter = new Hono();
 
-postPostsVotesRouter.post(
+postPostsRouter.post(
 	'/',
 	describeRoute({
-		description: 'Vote for a post',
-		tags: ['posts_votes'],
+		description: 'Create a new post',
+		tags: ['posts'],
 		security: [{ bearerAuth: [] }],
 		responses: {
 			201: {
@@ -53,12 +49,6 @@ postPostsVotesRouter.post(
 						schema: resolver(notAuthorizedResponseSchema)
 					}
 				}
-			},
-			404: {
-				description: 'Post not found',
-				content: {
-					'application/json': { schema: resolver(notFoundResponseSchema) }
-				}
 			}
 		}
 	}),
@@ -75,36 +65,25 @@ postPostsVotesRouter.post(
 	async (c) => {
 		const token = c.req.valid('header').authorization!.replace('Bearer ', '');
 
-		const userSession = await db.query.session.findFirst({
-			where: drizzle.eq(schema.session.token, token)
-		});
+		const userSession = await getSessionByToken(token);
 
 		if (!userSession) {
 			return c.json({ message: 'Invalid or expired token' }, 401);
 		}
 
-		const { postId, vote } = c.req.valid('json');
+		const newPostData = c.req.valid('json');
 
-		const [postVote] = await db
-			.insert(schema.postsVotes)
+		const [createdPost] = await db
+			.insert(schema.posts)
 			.values({
-				postId: postId,
-				userId: userSession.userId,
-				vote: vote === 'upvote' ? 1 : -1
-			})
-			.onConflictDoUpdate({
-				target: [schema.postsVotes.postId, schema.postsVotes.userId],
-				set: {
-					vote: vote === 'upvote' ? 1 : -1,
-					updatedAt: new Date()
-				}
+				title: newPostData.title,
+				content: newPostData.content,
+				authorId: userSession.session.userId
 			})
 			.returning({
-				updatedAt: schema.postsVotes.updatedAt
+				id: schema.posts.id
 			});
 
-		if (!postVote) return c.notFound();
-
-		return c.json(postVote, 201);
+		return c.json(createdPost, 201);
 	}
 );

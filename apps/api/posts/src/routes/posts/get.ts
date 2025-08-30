@@ -2,6 +2,7 @@ import * as v from 'valibot';
 import { Hono } from 'hono';
 import { describeRoute } from 'hono-openapi';
 import { resolver, validator } from 'hono-openapi/valibot';
+import { getSessionByToken } from '@monorepo-starter/api-kit';
 import { db, schema, drizzle } from '@monorepo-starter/db';
 import {
 	authOptionalHeaderSchema,
@@ -90,16 +91,9 @@ getPostsRouter
 			const { page = 1, limit = 10 } = c.req.valid('query');
 			const { authorization } = c.req.valid('header');
 
-			let currentUserId: string | null = null;
-			if (authorization?.startsWith('Bearer ')) {
-				const token = authorization.replace('Bearer ', '');
-
-				const userSession = await db.query.session.findFirst({
-					where: drizzle.eq(schema.session.token, token)
-				});
-
-				if (userSession) currentUserId = userSession.userId;
-			}
+			const userSession = authorization?.startsWith('Bearer ')
+				? await getSessionByToken(authorization.replace('Bearer ', ''))
+				: null;
 
 			const posts = await db
 				.select({
@@ -129,7 +123,7 @@ getPostsRouter
 							)
 						)
 						.as('downvotesCount'),
-					...(currentUserId && {
+					...(userSession && {
 						userVote: schema.postsVotes.vote
 					})
 				})
@@ -140,7 +134,7 @@ getPostsRouter
 					schema.postsVotes,
 					drizzle.and(
 						drizzle.eq(schema.postsVotes.postId, schema.posts.id),
-						drizzle.eq(schema.postsVotes.userId, currentUserId ?? '-')
+						drizzle.eq(schema.postsVotes.userId, userSession?.session.userId ?? '-')
 					)
 				)
 				.limit(limit)
@@ -188,16 +182,9 @@ getPostsRouter
 			const { id } = c.req.valid('param');
 			const { authorization } = c.req.valid('header');
 
-			let currentUserId: string | null = null;
-			if (authorization?.startsWith('Bearer ')) {
-				const token = authorization.replace('Bearer ', '');
-
-				const userSession = await db.query.session.findFirst({
-					where: drizzle.eq(schema.session.token, token)
-				});
-
-				if (userSession) currentUserId = userSession.userId;
-			}
+			const userSession = authorization?.startsWith('Bearer ')
+				? await getSessionByToken(authorization.replace('Bearer ', ''))
+				: null;
 
 			const [post] = await db
 				.select({
@@ -227,7 +214,7 @@ getPostsRouter
 							)
 						)
 						.as('downvotesCount'),
-					...(currentUserId && {
+					...(userSession && {
 						userVote: schema.postsVotes.vote
 					})
 				})
@@ -238,7 +225,7 @@ getPostsRouter
 					schema.postsVotes,
 					drizzle.and(
 						drizzle.eq(schema.postsVotes.postId, id),
-						drizzle.eq(schema.postsVotes.userId, currentUserId ?? '-')
+						drizzle.eq(schema.postsVotes.userId, userSession?.session.userId ?? '-')
 					)
 				)
 				.where(drizzle.eq(schema.posts.id, id))

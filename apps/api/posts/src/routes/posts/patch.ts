@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import * as v from 'valibot';
 import { describeRoute } from 'hono-openapi';
 import { resolver, validator } from 'hono-openapi/valibot';
+import { getSessionByToken } from '@monorepo-starter/api-kit';
 import { db, schema, drizzle } from '@monorepo-starter/db';
 import {
 	authHeaderSchema,
@@ -77,9 +78,7 @@ patchPostsRouter.patch(
 	async (c) => {
 		const token = c.req.valid('header').authorization!.replace('Bearer ', '');
 
-		const userSession = await db.query.session.findFirst({
-			where: drizzle.eq(schema.session.token, token)
-		});
+		const userSession = await getSessionByToken(token);
 
 		if (!userSession) {
 			return c.json({ message: 'Invalid or expired token' }, 401);
@@ -97,7 +96,7 @@ patchPostsRouter.patch(
 			.where(
 				drizzle.and(
 					drizzle.eq(schema.posts.id, id),
-					drizzle.eq(schema.posts.authorId, userSession.userId)
+					drizzle.eq(schema.posts.authorId, userSession.session.userId)
 				)
 			)
 			.returning({

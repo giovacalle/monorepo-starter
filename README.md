@@ -55,7 +55,7 @@ packages/
      pnpm dev --filter=@monorepo-starter/web
 
      # start API services
-     pnpm dev --filter=@monorepo-starter/api-services-posts
+     pnpm dev --filter=@monorepo-starter/api-posts
      # p.s. you can also run all api services at once with:
      pnpm dev-all-apis
      ```

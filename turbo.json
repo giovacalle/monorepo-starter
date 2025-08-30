@@ -12,7 +12,8 @@
 		"GOOGLE_CLIENT_ID",
 		"GOOGLE_CLIENT_SECRET",
 		"RESEND_API_KEY",
-		"FROM_EMAIL"
+		"FROM_EMAIL",
+		"REDIS_URL"
 	],
 	"tasks": {
 		"build": {

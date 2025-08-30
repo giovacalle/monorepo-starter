@@ -1,5 +1,5 @@
 {
-	"extends": "@monorepo-starter/config-ts/base",
+	"extends": "./node_modules/@monorepo-starter/config-ts/base.json",
 	"include": ["src/emails/**/*.tsx", "src/**/*.ts"],
 	"compilerOptions": {
 		"outDir": "dist",

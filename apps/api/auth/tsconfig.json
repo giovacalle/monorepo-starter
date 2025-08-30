@@ -1,13 +1,12 @@
 {
-	"extends": "@monorepo-starter/config-ts/base",
+	"extends": "./node_modules/@monorepo-starter/config-ts/base.json",
 	"include": ["src/**/*.ts"],
 	"compilerOptions": {
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
 		"outDir": "dist",
 		"paths": {
-			"@/*": ["./src/*"],
-			"@shared/*": ["./src/shared/*"]
+			"@/*": ["./src/*"]
 		}
 	},
 	"tsc-alias": {

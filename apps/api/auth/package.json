@@ -1,5 +1,5 @@
 {
-	"name": "@monorepo-starter/api-services-auth",
+	"name": "@monorepo-starter/api-auth",
 	"private": true,
 	"version": "1.0.0",
 	"scripts": {
@@ -17,6 +17,7 @@
 	},
 	"dependencies": {
 		"@hono/node-server": "^1.14.0",
+		"@monorepo-starter/api-kit": "workspace:*",
 		"@monorepo-starter/db": "workspace:*",
 		"@monorepo-starter/transactional": "workspace:*",
 		"better-auth": "^1.2.8",
