@@ -2,7 +2,8 @@ import { Hono } from 'hono';
 import { describeRoute } from 'hono-openapi';
 import { resolver, validator } from 'hono-openapi/valibot';
 import { getSessionByToken } from '@monorepo-starter/api-kit';
-import { db, schema, drizzle } from '@monorepo-starter/db';
+import { db, and, eq } from '@monorepo-starter/db';
+import { posts } from '@monorepo-starter/db/schema';
 import {
 	authHeaderSchema,
 	notAuthorizedResponseSchema,
@@ -60,15 +61,10 @@ deletePostsRouter.delete(
 		const { id } = c.req.valid('param');
 
 		const [deletedPost] = await db
-			.delete(schema.posts)
-			.where(
-				drizzle.and(
-					drizzle.eq(schema.posts.id, id),
-					drizzle.eq(schema.posts.authorId, userSession.session.userId)
-				)
-			)
+			.delete(posts)
+			.where(and(eq(posts.id, id), eq(posts.authorId, userSession.session.userId)))
 			.returning({
-				id: schema.posts.id
+				id: posts.id
 			});
 
 		if (!deletedPost) return c.notFound();

@@ -1,4 +1,6 @@
-import { db, schema, drizzle } from '@monorepo-starter/db';
+import { session, user } from '@monorepo-starter/db/schema';
+import { Session, User } from '@monorepo-starter/db/types';
+import { db, and, eq, gte } from '@monorepo-starter/db';
 import { withErrorHandling } from '../errors';
 import { kvGet } from '../kv';
 
@@ -6,31 +8,28 @@ export function kvSessionKey(token: string) {
 	return `sess:${token}`;
 }
 
-export type Session = {
-	session: typeof schema.session.$inferSelect;
-	user: typeof schema.user.$inferSelect;
-};
-
-export async function getSessionByToken(token: string): Promise<Session | null> {
+export async function getSessionByToken(
+	token: string
+): Promise<{ session: Session; user: User } | null> {
 	return withErrorHandling(
 		(async () => {
 			if (!token) return null;
 
-			const cached = await kvGet<Session>(kvSessionKey(token));
+			const cached = await kvGet<{ session: Session; user: User }>(kvSessionKey(token));
 			if (cached) return cached;
 
-			const fromDb = await db.query.session.findFirst({
-				where: drizzle.and(
-					drizzle.eq(schema.session.token, token),
-					drizzle.gte(schema.session.expiresAt, new Date())
-				),
-				with: {
-					user: true
-				}
-			});
+			const [fromDb] = await db
+				.select({
+					session,
+					user
+				})
+				.from(session)
+				.innerJoin(user, eq(session.userId, user.id))
+				.where(and(eq(session.token, token), gte(session.expiresAt, new Date())))
+				.limit(1);
 			if (!fromDb) return null;
 
-			return { session: fromDb, user: fromDb.user };
+			return fromDb;
 		})(),
 		{
 			errorMessage: 'Failed to get session by token',

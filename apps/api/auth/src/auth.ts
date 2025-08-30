@@ -1,5 +1,6 @@
 import { getKV, kvSessionKey } from '@monorepo-starter/api-kit';
-import { db, drizzle, schema } from '@monorepo-starter/db';
+import { db, eq } from '@monorepo-starter/db';
+import { user as users } from '@monorepo-starter/db/schema';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { emailOTP } from 'better-auth/plugins';
@@ -66,9 +67,11 @@ export const auth = betterAuth({
 								style: 'lowerCase'
 							});
 
-							const existingUser = await db.query.user.findFirst({
-								where: drizzle.eq(schema.user.username, randomUsername)
-							});
+							const [existingUser] = await db
+								.select()
+								.from(users)
+								.where(eq(users.username, randomUsername))
+								.limit(1);
 
 							if (!existingUser) {
 								username = randomUsername;

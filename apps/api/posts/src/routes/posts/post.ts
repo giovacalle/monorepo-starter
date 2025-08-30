@@ -3,7 +3,8 @@ import * as v from 'valibot';
 import { describeRoute } from 'hono-openapi';
 import { resolver, validator } from 'hono-openapi/valibot';
 import { getSessionByToken } from '@monorepo-starter/api-kit';
-import { db, schema } from '@monorepo-starter/db';
+import { db } from '@monorepo-starter/db';
+import { posts } from '@monorepo-starter/db/schema';
 import {
 	authHeaderSchema,
 	badRequestResponseSchema,
@@ -74,14 +75,14 @@ postPostsRouter.post(
 		const newPostData = c.req.valid('json');
 
 		const [createdPost] = await db
-			.insert(schema.posts)
+			.insert(posts)
 			.values({
 				title: newPostData.title,
 				content: newPostData.content,
 				authorId: userSession.session.userId
 			})
 			.returning({
-				id: schema.posts.id
+				id: posts.id
 			});
 
 		return c.json(createdPost, 201);

@@ -3,7 +3,8 @@ import * as v from 'valibot';
 import { describeRoute } from 'hono-openapi';
 import { resolver, validator } from 'hono-openapi/valibot';
 import { getSessionByToken } from '@monorepo-starter/api-kit';
-import { db, schema } from '@monorepo-starter/db';
+import { db } from '@monorepo-starter/db';
+import { postsVotes } from '@monorepo-starter/db/schema';
 import {
 	authHeaderSchema,
 	badRequestResponseSchema,
@@ -85,21 +86,21 @@ postPostsVotesRouter.post(
 		const { postId, vote } = c.req.valid('json');
 
 		const [postVote] = await db
-			.insert(schema.postsVotes)
+			.insert(postsVotes)
 			.values({
 				postId: postId,
 				userId: userSession.session.userId,
 				vote: vote === 'upvote' ? 1 : -1
 			})
 			.onConflictDoUpdate({
-				target: [schema.postsVotes.postId, schema.postsVotes.userId],
+				target: [postsVotes.postId, postsVotes.userId],
 				set: {
 					vote: vote === 'upvote' ? 1 : -1,
 					updatedAt: new Date()
 				}
 			})
 			.returning({
-				updatedAt: schema.postsVotes.updatedAt
+				updatedAt: postsVotes.updatedAt
 			});
 
 		if (!postVote) return c.notFound();

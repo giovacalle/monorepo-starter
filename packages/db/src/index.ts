@@ -1,3 +1,3 @@
-export { db } from './db';
-export * as schema from './schema';
-export * as drizzle from 'drizzle-orm';
+export { db, closeDb, getDb } from './db';
+
+export { and, eq, gte, lte, gt, lt, isNull, isNotNull, desc, asc, or, not } from 'drizzle-orm';

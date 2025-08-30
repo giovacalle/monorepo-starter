@@ -3,7 +3,8 @@ import { Hono } from 'hono';
 import { describeRoute } from 'hono-openapi';
 import { resolver, validator } from 'hono-openapi/valibot';
 import { getSessionByToken } from '@monorepo-starter/api-kit';
-import { db, schema, drizzle } from '@monorepo-starter/db';
+import { db, and, eq, desc } from '@monorepo-starter/db';
+import { user, posts, postsVotes } from '@monorepo-starter/db/schema';
 import {
 	authOptionalHeaderSchema,
 	badRequestResponseSchema,
@@ -95,53 +96,41 @@ getPostsRouter
 				? await getSessionByToken(authorization.replace('Bearer ', ''))
 				: null;
 
-			const posts = await db
+			const postsList = await db
 				.select({
-					id: schema.posts.id,
-					title: schema.posts.title,
-					content: schema.posts.content,
+					id: posts.id,
+					title: posts.title,
+					content: posts.content,
 					author: {
-						username: schema.user.username,
-						image: schema.user.image
+						username: user.username,
+						image: user.image
 					},
-					createdAt: schema.posts.createdAt,
+					createdAt: posts.createdAt,
 					upvotesCount: db
-						.$count(
-							schema.postsVotes,
-							drizzle.and(
-								drizzle.eq(schema.postsVotes.postId, schema.posts.id),
-								drizzle.eq(schema.postsVotes.vote, 1)
-							)
-						)
+						.$count(postsVotes, and(eq(postsVotes.postId, posts.id), eq(postsVotes.vote, 1)))
 						.as('upvotesCount'),
 					downvotesCount: db
-						.$count(
-							schema.postsVotes,
-							drizzle.and(
-								drizzle.eq(schema.postsVotes.postId, schema.posts.id),
-								drizzle.eq(schema.postsVotes.vote, -1)
-							)
-						)
+						.$count(postsVotes, and(eq(postsVotes.postId, posts.id), eq(postsVotes.vote, -1)))
 						.as('downvotesCount'),
 					...(userSession && {
-						userVote: schema.postsVotes.vote
+						userVote: postsVotes.vote
 					})
 				})
-				.from(schema.posts)
-				.innerJoin(schema.user, drizzle.eq(schema.posts.authorId, schema.user.id))
+				.from(posts)
+				.innerJoin(user, eq(posts.authorId, user.id))
 				// INFO: not sure this is the best way to handle optional user votes
 				.leftJoin(
-					schema.postsVotes,
-					drizzle.and(
-						drizzle.eq(schema.postsVotes.postId, schema.posts.id),
-						drizzle.eq(schema.postsVotes.userId, userSession?.session.userId ?? '-')
+					postsVotes,
+					and(
+						eq(postsVotes.postId, posts.id),
+						eq(postsVotes.userId, userSession?.session.userId ?? '-')
 					)
 				)
 				.limit(limit)
 				.offset((page - 1) * limit)
-				.orderBy(drizzle.desc(schema.posts.createdAt));
+				.orderBy(desc(posts.createdAt));
 
-			return c.json(posts);
+			return c.json(postsList);
 		}
 	)
 	.get(
@@ -188,47 +177,32 @@ getPostsRouter
 
 			const [post] = await db
 				.select({
-					id: schema.posts.id,
-					title: schema.posts.title,
-					content: schema.posts.content,
+					id: posts.id,
+					title: posts.title,
+					content: posts.content,
 					author: {
-						username: schema.user.username,
-						image: schema.user.image
+						username: user.username,
+						image: user.image
 					},
-					createdAt: schema.posts.createdAt,
+					createdAt: posts.createdAt,
 					upvotesCount: db
-						.$count(
-							schema.postsVotes,
-							drizzle.and(
-								drizzle.eq(schema.postsVotes.postId, id),
-								drizzle.eq(schema.postsVotes.vote, 1)
-							)
-						)
+						.$count(postsVotes, and(eq(postsVotes.postId, id), eq(postsVotes.vote, 1)))
 						.as('upvotesCount'),
 					downvotesCount: db
-						.$count(
-							schema.postsVotes,
-							drizzle.and(
-								drizzle.eq(schema.postsVotes.postId, id),
-								drizzle.eq(schema.postsVotes.vote, -1)
-							)
-						)
+						.$count(postsVotes, and(eq(postsVotes.postId, id), eq(postsVotes.vote, -1)))
 						.as('downvotesCount'),
 					...(userSession && {
-						userVote: schema.postsVotes.vote
+						userVote: postsVotes.vote
 					})
 				})
-				.from(schema.posts)
-				.innerJoin(schema.user, drizzle.eq(schema.posts.authorId, schema.user.id))
+				.from(posts)
+				.innerJoin(user, eq(posts.authorId, user.id))
 				// INFO: not sure this is the best way to handle optional user votes
 				.leftJoin(
-					schema.postsVotes,
-					drizzle.and(
-						drizzle.eq(schema.postsVotes.postId, id),
-						drizzle.eq(schema.postsVotes.userId, userSession?.session.userId ?? '-')
-					)
+					postsVotes,
+					and(eq(postsVotes.postId, id), eq(postsVotes.userId, userSession?.session.userId ?? '-'))
 				)
-				.where(drizzle.eq(schema.posts.id, id))
+				.where(eq(posts.id, id))
 				.limit(1);
 
 			if (!post) return c.notFound();
