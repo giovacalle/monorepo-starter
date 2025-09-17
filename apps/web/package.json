@@ -13,13 +13,13 @@
 	},
 	"devDependencies": {
 		"@iconify/svelte": "^5.0.0",
+		"@monorepo-starter/config-eslint": "workspace:*",
+		"@monorepo-starter/config-prettier": "workspace:*",
+		"@monorepo-starter/config-ts": "workspace:*",
 		"@sveltejs/adapter-node": "^5.2.12",
 		"@sveltejs/kit": "^2.16.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
 		"@tailwindcss/vite": "^4.0.0",
-		"@monorepo-starter/config-eslint": "workspace:*",
-		"@monorepo-starter/config-prettier": "workspace:*",
-		"@monorepo-starter/config-ts": "workspace:*",
 		"clsx": "^2.1.1",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
@@ -33,9 +33,10 @@
 	},
 	"dependencies": {
 		"@inlang/paraglide-js": "^2.0.0",
-		"@tanstack/svelte-query": "^5.75.0",
 		"@monorepo-starter/openapi-client": "workspace:*",
 		"@monorepo-starter/ui": "workspace:*",
+		"@tanstack/svelte-query": "^5.75.0",
+		"@tanstack/svelte-query-devtools": "^5.89.0",
 		"better-auth": "^1.2.8",
 		"mode-watcher": "^1.1.0",
 		"svelte-sonner": "^1.0.5"

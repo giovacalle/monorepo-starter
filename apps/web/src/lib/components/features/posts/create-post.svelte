@@ -5,7 +5,7 @@
 	import { valibot } from 'sveltekit-superforms/adapters';
 	import { createPostSchema, type CreatePostForm } from './form-schema';
 	import Icon from '@iconify/svelte';
-	import { createPostApiV1Posts } from '@monorepo-starter/openapi-client';
+	import { createPostApiV1Posts, getGetApiV1PostsQueryKey } from '@monorepo-starter/openapi-client';
 	import { authClient } from '$lib/auth/client';
 	import { toast } from 'svelte-sonner';
 	import { useQueryClient } from '@tanstack/svelte-query';
@@ -19,7 +19,7 @@
 				toast.error(m['pages.home.posts.createPost.errors.generic']());
 			},
 			onSuccess: () => {
-				queryClient.invalidateQueries({ queryKey: ['posts-get'] });
+				queryClient.invalidateQueries({ queryKey: getGetApiV1PostsQueryKey() });
 				toast.success(m['pages.home.posts.createPost.success']());
 			}
 		}

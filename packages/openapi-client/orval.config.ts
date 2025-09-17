@@ -19,8 +19,17 @@ export default defineConfig({
 			headers: true,
 			override: {
 				mutator: {
-					path: 'src/gen/posts/custom-fetch.ts',
-					name: 'customFetch'
+					path: 'src/base-custom-fetch.ts',
+					name: 'baseCustomFetch'
+				},
+				operations: {
+					getApiV1Posts: {
+						query: {
+							useQuery: true,
+							useInfinite: true,
+							useInfiniteQueryParam: 'page'
+						}
+					}
 				}
 			}
 		}

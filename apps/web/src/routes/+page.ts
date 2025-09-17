@@ -1,11 +1,14 @@
-import { getGetApiV1PostsQueryOptions } from '@monorepo-starter/openapi-client';
+import {
+	getGetApiV1PostsInfiniteQueryOptions,
+	getGetApiV1PostsQueryKey
+} from '@monorepo-starter/openapi-client';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ data, parent }) => {
 	const { queryClient } = await parent();
 
-	await queryClient.prefetchQuery(
-		getGetApiV1PostsQueryOptions(
+	await queryClient.prefetchInfiniteQuery(
+		getGetApiV1PostsInfiniteQueryOptions(
 			{
 				page: 1,
 				limit: 50
@@ -15,7 +18,7 @@ export const load: PageLoad = async ({ data, parent }) => {
 			},
 			{
 				query: {
-					queryKey: ['posts-get']
+					queryKey: getGetApiV1PostsQueryKey()
 				}
 			}
 		)

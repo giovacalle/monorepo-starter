@@ -37,7 +37,6 @@ export const baseCustomFetch = async <T>({
 	const requestUrl = `${url}${requestParams ? `?${requestParams}` : ''}`;
 
 	const isFormData = data instanceof FormData;
-
 	try {
 		const response = await fetch(requestUrl, {
 			method,
@@ -74,10 +73,18 @@ function getHeaders(headers: object): object {
 
 function getParams(params: any): string | undefined {
 	if (params) {
-		const searchParams = new URLSearchParams(params);
-		for (const [key, value] of searchParams.entries()) {
-			if (value === null || value === undefined) searchParams.delete(key);
-		}
+		// Filter out undefined/null values BEFORE creating URLSearchParams
+		const filteredParams = Object.fromEntries(
+			Object.entries(params).filter(
+				// eslint-disable-next-line @typescript-eslint/no-unused-vars
+				([_, value]) =>
+					value !== undefined && value !== null && value !== 'undefined' && value !== 'null'
+			)
+		) as Record<string, string>;
+
+		if (Object.keys(filteredParams).length === 0) return undefined;
+
+		const searchParams = new URLSearchParams(filteredParams);
 		return searchParams.toString();
 	}
 	return;

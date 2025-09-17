@@ -153,6 +153,7 @@ export type PostApiV1PostsVotesBody = {
 
 export type PostApiV1PostsVotes201 = {
 	updatedAt: string;
+	vote: number;
 };
 
 export type PostApiV1PostsVotes400 = {

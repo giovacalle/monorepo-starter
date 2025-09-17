@@ -5,20 +5,18 @@
 	import Icon from '@iconify/svelte';
 	import { m } from '$lib/paraglide/messages';
 	import PostCard from '$lib/components/features/posts/post-card.svelte';
-	import { createGetApiV1Posts } from '@monorepo-starter/openapi-client';
+	import {
+		createGetApiV1PostsInfinite,
+		getGetApiV1PostsQueryKey
+	} from '@monorepo-starter/openapi-client';
 	import { authClient } from '$lib/auth/client';
-
-	let page = $state(1);
-	let limit = $state(50);
 
 	const session = authClient.useSession();
 
-	// INFO: this is a workaround in order to use runes value
 	const posts = $derived.by(() =>
-		createGetApiV1Posts(
+		createGetApiV1PostsInfinite(
 			{
-				page,
-				limit
+				limit: 50
 			},
 			{
 				authorization: $session.data?.session.token
@@ -27,7 +25,13 @@
 			},
 			{
 				query: {
-					queryKey: ['posts-get']
+					queryKey: getGetApiV1PostsQueryKey(),
+					select: (data) => data.pages.flatMap((page) => page.data),
+					getNextPageParam: (lastPage, allPages) => {
+						const morePagesExist = lastPage.data.length === 50;
+						if (!morePagesExist) return undefined;
+						return allPages.length + 1;
+					}
 				}
 			}
 		)
@@ -88,7 +92,7 @@
 						</span>
 					</div>
 				{:else}
-					{#each $posts.data?.data ?? [] as post (post.id)}
+					{#each $posts.data ?? [] as post (post.id)}
 						<div class="space-y-4">
 							<PostCard {...post} />
 						</div>
@@ -97,19 +101,16 @@
 			</div>
 
 			<!-- Pagination (to be implemented) -->
-			<!-- <div class="flex justify-center">
-					<Button
-						variant="outline"
-						size="sm"
-						onclick={() => {
-							page += 1;
-						}}>
+			{#if $posts.hasNextPage && !$posts.isLoading && !$posts.isError}
+				<div class="flex justify-center">
+					<Button variant="outline" size="sm" onclick={() => $posts.fetchNextPage()}>
 						{m['common.loadMore']()}
 					</Button>
-				</div> -->
+				</div>
+			{/if}
 
 			<!-- Empty State -->
-			{#if !$posts.isLoading && $posts.data?.data.length === 0}
+			{#if !$posts.isLoading && $posts.data?.length === 0}
 				<div class="py-12 text-center">
 					<Icon
 						icon="mdi:post-outline"

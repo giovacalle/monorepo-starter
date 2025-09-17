@@ -8,6 +8,7 @@
 		createDeleteApiV1PostsById,
 		createDeleteApiV1PostsVotesByPostId,
 		createPostApiV1PostsVotes,
+		getGetApiV1PostsQueryKey,
 		type GetApiV1Posts200Item
 	} from '@monorepo-starter/openapi-client';
 	import { useQueryClient } from '@tanstack/svelte-query';
@@ -24,6 +25,10 @@
 		userVote
 	}: GetApiV1Posts200Item = $props();
 
+	let userVoteState = $state(userVote);
+	let upvotesCountState = $state(upvotesCount);
+	let downvotesCountState = $state(downvotesCount);
+
 	const session = authClient.useSession();
 	const queryClient = useQueryClient();
 
@@ -33,7 +38,7 @@
 				toast.error(m['pages.home.posts.deletePost.error']());
 			},
 			onSuccess: () => {
-				queryClient.invalidateQueries({ queryKey: ['posts-get'] });
+				queryClient.invalidateQueries({ queryKey: getGetApiV1PostsQueryKey() });
 				toast.success(m['pages.home.posts.deletePost.success']());
 			}
 		}
@@ -44,8 +49,15 @@
 			onError: () => {
 				toast.error(m['pages.home.posts.vote.error']());
 			},
-			onSuccess: () => {
-				queryClient.invalidateQueries({ queryKey: ['posts-get'] });
+			onSuccess: (res) => {
+				userVoteState = res.data.vote;
+				if (res.data.vote === 1) {
+					upvotesCountState += 1;
+					downvotesCountState = Math.max(downvotesCountState - 1, 0);
+				} else {
+					downvotesCountState += 1;
+					upvotesCountState = Math.max(upvotesCountState - 1, 0);
+				}
 				toast.success(m['pages.home.posts.vote.success']());
 			}
 		}
@@ -57,7 +69,7 @@
 				toast.error(m['pages.home.posts.vote.deleteError']());
 			},
 			onSuccess: () => {
-				queryClient.invalidateQueries({ queryKey: ['posts-get'] });
+				userVoteState = undefined;
 				toast.success(m['pages.home.posts.vote.deleteSuccess']());
 			}
 		}
@@ -66,7 +78,10 @@
 	async function handleVote(vote: 'upvote' | 'downvote') {
 		if (!$session.data) return;
 
-		if ((userVote === -1 && vote === 'downvote') || (userVote === 1 && vote === 'upvote')) {
+		if (
+			(userVoteState === -1 && vote === 'downvote') ||
+			(userVoteState === 1 && vote === 'upvote')
+		) {
 			await $deleteVotePost.mutateAsync({
 				postId: id,
 				headers: {
@@ -135,30 +150,30 @@
 			size="sm"
 			class={cn(
 				'text-muted-foreground gap-1',
-				userVote === 1 && 'text-green-600',
+				userVoteState === 1 && 'text-green-600',
 				!$session.data && 'cursor-not-allowed'
 			)}
 			disabled={!$session.data || $deletePost.isPending || $votePost.isPending}
 			onclick={() => handleVote('upvote')}>
 			<Icon
-				icon={userVote === 1 ? 'mdi:arrow-up-bold' : 'mdi:arrow-up-bold-outline'}
+				icon={userVoteState === 1 ? 'mdi:arrow-up-bold' : 'mdi:arrow-up-bold-outline'}
 				class="h-4 w-4" />
-			{upvotesCount}
+			{upvotesCountState}
 		</Button>
 		<Button
 			variant="ghost"
 			size="sm"
 			class={cn(
 				'text-muted-foreground gap-1',
-				userVote === -1 && 'text-red-600',
+				userVoteState === -1 && 'text-red-600',
 				!$session.data && 'cursor-not-allowed'
 			)}
 			disabled={!$session.data || $deletePost.isPending || $votePost.isPending}
 			onclick={() => handleVote('downvote')}>
 			<Icon
-				icon={userVote === -1 ? 'mdi:arrow-down-bold' : 'mdi:arrow-down-bold-outline'}
+				icon={userVoteState === -1 ? 'mdi:arrow-down-bold' : 'mdi:arrow-down-bold-outline'}
 				class="h-4 w-4" />
-			{downvotesCount}
+			{downvotesCountState}
 		</Button>
 	</div>
 </Card>

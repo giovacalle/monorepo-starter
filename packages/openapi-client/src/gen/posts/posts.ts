@@ -5,13 +5,16 @@
  * API for managing posts
  * OpenAPI spec version: 1.0.0
  */
-import { createMutation, createQuery } from '@tanstack/svelte-query';
+import { createInfiniteQuery, createMutation, createQuery } from '@tanstack/svelte-query';
 import type {
+	CreateInfiniteQueryOptions,
+	CreateInfiniteQueryResult,
 	CreateMutationOptions,
 	CreateMutationResult,
 	CreateQueryOptions,
 	CreateQueryResult,
 	DataTag,
+	InfiniteData,
 	MutationFunction,
 	QueryClient,
 	QueryFunction,
@@ -53,7 +56,7 @@ import type {
 	PostApiV1PostsVotesHeaders
 } from './posts.schemas';
 
-import { customFetch } from './custom-fetch';
+import { baseCustomFetch } from '../../base-custom-fetch';
 
 /**
  * Get all posts
@@ -63,7 +66,7 @@ export const getApiV1Posts = (
 	headers?: GetApiV1PostsHeaders,
 	signal?: AbortSignal
 ) => {
-	return customFetch<GetApiV1Posts200Item[]>({
+	return baseCustomFetch<GetApiV1Posts200Item[]>({
 		url: 'http://localhost:4001/api/v1/posts',
 		method: 'GET',
 		headers,
@@ -75,6 +78,80 @@ export const getApiV1Posts = (
 export const getGetApiV1PostsQueryKey = (params?: GetApiV1PostsParams) => {
 	return ['http://localhost:4001/api/v1/posts', ...(params ? [params] : [])] as const;
 };
+
+export const getGetApiV1PostsInfiniteQueryOptions = <
+	TData = InfiniteData<Awaited<ReturnType<typeof getApiV1Posts>>, GetApiV1PostsParams['page']>,
+	TError = GetApiV1Posts400 | GetApiV1Posts404
+>(
+	params?: GetApiV1PostsParams,
+	headers?: GetApiV1PostsHeaders,
+	options?: {
+		query?: Partial<
+			CreateInfiniteQueryOptions<
+				Awaited<ReturnType<typeof getApiV1Posts>>,
+				TError,
+				TData,
+				ReturnType<typeof getGetApiV1PostsQueryKey>,
+				GetApiV1PostsParams['page']
+			>
+		>;
+	}
+) => {
+	const { query: queryOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetApiV1PostsQueryKey(params);
+
+	const queryFn: QueryFunction<
+		Awaited<ReturnType<typeof getApiV1Posts>>,
+		QueryKey,
+		GetApiV1PostsParams['page']
+	> = ({ signal, pageParam }) =>
+		getApiV1Posts({ ...params, page: pageParam || params?.['page'] }, headers, signal);
+
+	return { queryKey, queryFn, ...queryOptions } as CreateInfiniteQueryOptions<
+		Awaited<ReturnType<typeof getApiV1Posts>>,
+		TError,
+		TData,
+		ReturnType<typeof getGetApiV1PostsQueryKey>,
+		GetApiV1PostsParams['page']
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetApiV1PostsInfiniteQueryResult = NonNullable<
+	Awaited<ReturnType<typeof getApiV1Posts>>
+>;
+export type GetApiV1PostsInfiniteQueryError = GetApiV1Posts400 | GetApiV1Posts404;
+
+export function createGetApiV1PostsInfinite<
+	TData = InfiniteData<Awaited<ReturnType<typeof getApiV1Posts>>, GetApiV1PostsParams['page']>,
+	TError = GetApiV1Posts400 | GetApiV1Posts404
+>(
+	params?: GetApiV1PostsParams,
+	headers?: GetApiV1PostsHeaders,
+	options?: {
+		query?: Partial<
+			CreateInfiniteQueryOptions<
+				Awaited<ReturnType<typeof getApiV1Posts>>,
+				TError,
+				TData,
+				ReturnType<typeof getGetApiV1PostsQueryKey>,
+				GetApiV1PostsParams['page']
+			>
+		>;
+	},
+	queryClient?: QueryClient
+): CreateInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetApiV1PostsInfiniteQueryOptions(params, headers, options);
+
+	const query = createInfiniteQuery(queryOptions, queryClient) as CreateInfiniteQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	query.queryKey = queryOptions.queryKey;
+
+	return query;
+}
 
 export const getGetApiV1PostsQueryOptions = <
 	TData = Awaited<ReturnType<typeof getApiV1Posts>>,
@@ -133,7 +210,7 @@ export const postApiV1Posts = (
 	headers: PostApiV1PostsHeaders,
 	signal?: AbortSignal
 ) => {
-	return customFetch<PostApiV1Posts201>({
+	return baseCustomFetch<PostApiV1Posts201>({
 		url: 'http://localhost:4001/api/v1/posts',
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json', ...headers },
@@ -213,7 +290,7 @@ export const getApiV1PostsById = (
 	headers?: GetApiV1PostsByIdHeaders,
 	signal?: AbortSignal
 ) => {
-	return customFetch<GetApiV1PostsById200>({
+	return baseCustomFetch<GetApiV1PostsById200>({
 		url: `http://localhost:4001/api/v1/posts/${id}`,
 		method: 'GET',
 		headers,
@@ -288,7 +365,7 @@ export const patchApiV1PostsById = (
 	patchApiV1PostsByIdBody: PatchApiV1PostsByIdBody,
 	headers: PatchApiV1PostsByIdHeaders
 ) => {
-	return customFetch<PatchApiV1PostsById200>({
+	return baseCustomFetch<PatchApiV1PostsById200>({
 		url: `http://localhost:4001/api/v1/posts/${id}`,
 		method: 'PATCH',
 		headers: { 'Content-Type': 'application/json', ...headers },
@@ -368,7 +445,7 @@ export const createPatchApiV1PostsById = <
  * Delete a post by id
  */
 export const deleteApiV1PostsById = (id: number, headers: DeleteApiV1PostsByIdHeaders) => {
-	return customFetch<void>({
+	return baseCustomFetch<void>({
 		url: `http://localhost:4001/api/v1/posts/${id}`,
 		method: 'DELETE',
 		headers
@@ -448,7 +525,7 @@ export const postApiV1PostsVotes = (
 	headers: PostApiV1PostsVotesHeaders,
 	signal?: AbortSignal
 ) => {
-	return customFetch<PostApiV1PostsVotes201>({
+	return baseCustomFetch<PostApiV1PostsVotes201>({
 		url: 'http://localhost:4001/api/v1/posts_votes',
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json', ...headers },
@@ -532,7 +609,7 @@ export const deleteApiV1PostsVotesByPostId = (
 	postId: number,
 	headers: DeleteApiV1PostsVotesByPostIdHeaders
 ) => {
-	return customFetch<void>({
+	return baseCustomFetch<void>({
 		url: `http://localhost:4001/api/v1/posts_votes/${postId}`,
 		method: 'DELETE',
 		headers

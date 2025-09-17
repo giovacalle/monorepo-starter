@@ -22,7 +22,8 @@ const bodySchema = v.object({
 });
 
 const responseSchema = v.object({
-	updatedAt: v.string()
+	updatedAt: v.string(),
+	vote: v.number()
 });
 
 export const postPostsVotesRouter = new Hono();
@@ -100,7 +101,8 @@ postPostsVotesRouter.post(
 				}
 			})
 			.returning({
-				updatedAt: postsVotes.updatedAt
+				updatedAt: postsVotes.updatedAt,
+				vote: postsVotes.vote
 			});
 
 		if (!postVote) return c.notFound();
