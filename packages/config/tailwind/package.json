@@ -1,0 +1,13 @@
+{
+	"name": "@monorepo-starter/config-tailwind",
+	"private": true,
+	"version": "1.0.0",
+	"type": "module",
+	"exports": {
+		"./shared.css": "./shared.css"
+	},
+	"devDependencies": {
+		"tailwindcss": "^4.0.0",
+		"tw-animate-css": "^1.2.9"
+	}
+}
