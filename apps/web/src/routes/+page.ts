@@ -10,7 +10,6 @@ export const load: PageLoad = async ({ data, parent }) => {
 	await queryClient.prefetchInfiniteQuery(
 		getGetApiV1PostsInfiniteQueryOptions(
 			{
-				page: 1,
 				limit: 50
 			},
 			{

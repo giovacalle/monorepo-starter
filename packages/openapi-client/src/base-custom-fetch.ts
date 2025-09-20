@@ -1,4 +1,4 @@
-class CustomError extends Error {
+export class CustomError extends Error {
 	status: number;
 	data: any;
 	headers: Headers;

@@ -75,12 +75,11 @@
 
 			<!-- Posts Feed -->
 			<div class="space-y-6">
-				{#if $posts.isLoading}
+				{#if $posts.isFetching}
 					<div class="py-12 text-center">
 						<Icon
 							icon="mdi:loading"
 							class="text-muted-foreground mx-auto mb-4 h-16 w-16 animate-spin" />
-						<p class="text-muted-foreground">Loading posts...</p>
 					</div>
 				{:else if $posts.isError}
 					<div class="py-12 text-center">
@@ -88,7 +87,7 @@
 							icon="mdi:alert-circle-outline"
 							class="text-muted-foreground mx-auto mb-4 h-16 w-16 opacity-50" />
 						<span class="text-destructive">
-							{m['pages.home.posts.errors.generic']()}
+							{m['common.responses.errors.default']()}
 						</span>
 					</div>
 				{:else}
@@ -101,7 +100,7 @@
 			</div>
 
 			<!-- Pagination (to be implemented) -->
-			{#if $posts.hasNextPage && !$posts.isLoading && !$posts.isError}
+			{#if $posts.hasNextPage && !$posts.isFetching && !$posts.isError}
 				<div class="flex justify-center">
 					<Button variant="outline" size="sm" onclick={() => $posts.fetchNextPage()}>
 						{m['common.loadMore']()}
@@ -110,7 +109,7 @@
 			{/if}
 
 			<!-- Empty State -->
-			{#if !$posts.isLoading && $posts.data?.length === 0}
+			{#if !$posts.isFetching && $posts.data?.length === 0}
 				<div class="py-12 text-center">
 					<Icon
 						icon="mdi:post-outline"

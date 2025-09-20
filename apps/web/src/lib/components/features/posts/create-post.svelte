@@ -7,7 +7,6 @@
 	import Icon from '@iconify/svelte';
 	import { createPostApiV1Posts, getGetApiV1PostsQueryKey } from '@monorepo-starter/openapi-client';
 	import { authClient } from '$lib/auth/client';
-	import { toast } from 'svelte-sonner';
 	import { useQueryClient } from '@tanstack/svelte-query';
 
 	let isExpanded = $state(false);
@@ -15,12 +14,8 @@
 	const queryClient = useQueryClient();
 	const newPost = createPostApiV1Posts({
 		mutation: {
-			onError: () => {
-				toast.error(m['pages.home.posts.createPost.errors.generic']());
-			},
 			onSuccess: () => {
 				queryClient.invalidateQueries({ queryKey: getGetApiV1PostsQueryKey() });
-				toast.success(m['pages.home.posts.createPost.success']());
 			}
 		}
 	});

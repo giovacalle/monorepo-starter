@@ -36,7 +36,23 @@
 				}
 			}
 		},
-		"loadMore": "Carica altro"
+		"loadMore": "Carica altro",
+		"responses": {
+			"success": {
+				"200": "Richiesta completata con successo",
+				"201": "Risorsa creata con successo",
+				"204": "Risorsa eliminata con successo"
+			},
+			"errors": {
+				"400": "Richiesta non valida",
+				"401": "Devi effettuare l'accesso per continuare",
+				"404": "La risorsa richiesta non è stata trovata",
+				"429": "Troppe richieste. Rallenta un po'",
+				"499": "Richiesta annullata",
+				"500": "Errore del server. Riprova più tardi",
+				"default": "Si è verificato un errore imprevisto"
+			}
+		}
 	},
 	"pages": {
 		"home": {
@@ -50,27 +66,11 @@
 			"posts": {
 				"createPost": {
 					"placeholderCollapsed": "Inizia un nuovo post...",
-					"submit": "Pubblica",
-					"errors": {
-						"generic": "Si è verificato un errore durante la creazione del post. Riprova."
-					}
-				},
-				"deletePost": {
-					"success": "Post eliminato con successo.",
-					"error": "Si è verificato un errore durante l'eliminazione del post. Riprova."
-				},
-				"vote": {
-					"success": "Post votato con successo.",
-					"error": "Si è verificato un errore durante il voto del post. Riprova.",
-					"deleteSuccess": "Voto rimosso con successo.",
-					"deleteError": "Si è verificato un errore durante la rimozione del voto. Riprova."
+					"submit": "Pubblica"
 				},
 				"emptyState": {
 					"title": "Nessun post ancora",
 					"description": "Cosa aspetti? Inizia a condividere i tuoi pensieri con il mondo!"
-				},
-				"errors": {
-					"generic": "Si è verificato un errore durante il recupero dei post. Riprova."
 				}
 			}
 		},

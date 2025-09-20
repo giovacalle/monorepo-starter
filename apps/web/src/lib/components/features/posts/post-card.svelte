@@ -12,7 +12,6 @@
 		type GetApiV1Posts200Item
 	} from '@monorepo-starter/openapi-client';
 	import { useQueryClient } from '@tanstack/svelte-query';
-	import { toast } from 'svelte-sonner';
 
 	let {
 		id,
@@ -34,21 +33,14 @@
 
 	const deletePost = createDeleteApiV1PostsById({
 		mutation: {
-			onError: () => {
-				toast.error(m['pages.home.posts.deletePost.error']());
-			},
 			onSuccess: () => {
 				queryClient.invalidateQueries({ queryKey: getGetApiV1PostsQueryKey() });
-				toast.success(m['pages.home.posts.deletePost.success']());
 			}
 		}
 	});
 
 	const votePost = createPostApiV1PostsVotes({
 		mutation: {
-			onError: () => {
-				toast.error(m['pages.home.posts.vote.error']());
-			},
 			onSuccess: (res) => {
 				userVoteState = res.data.vote;
 				if (res.data.vote === 1) {
@@ -58,19 +50,14 @@
 					downvotesCountState += 1;
 					upvotesCountState = Math.max(upvotesCountState - 1, 0);
 				}
-				toast.success(m['pages.home.posts.vote.success']());
 			}
 		}
 	});
 
 	const deleteVotePost = createDeleteApiV1PostsVotesByPostId({
 		mutation: {
-			onError: () => {
-				toast.error(m['pages.home.posts.vote.deleteError']());
-			},
 			onSuccess: () => {
 				userVoteState = undefined;
-				toast.success(m['pages.home.posts.vote.deleteSuccess']());
 			}
 		}
 	});

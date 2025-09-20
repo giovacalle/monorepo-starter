@@ -36,7 +36,23 @@
 				}
 			}
 		},
-		"loadMore": "Load more"
+		"loadMore": "Load more",
+		"responses": {
+			"success": {
+				"200": "Request completed successfully",
+				"201": "Resource created successfully",
+				"204": "Resource deleted successfully"
+			},
+			"errors": {
+				"400": "Bad request",
+				"401": "You need to sign in to continue",
+				"404": "The requested resource was not found",
+				"429": "Too many requests. Please slow down",
+				"499": "Request was cancelled",
+				"500": "Server error. Please try again later",
+				"default": "An unexpected error occurred"
+			}
+		}
 	},
 	"pages": {
 		"home": {
@@ -50,28 +66,11 @@
 			"posts": {
 				"createPost": {
 					"placeholderCollapsed": "Start a new post...",
-					"submit": "Post",
-					"success": "Post created successfully!",
-					"errors": {
-						"generic": "An error occurred while creating the post. Please try again."
-					}
-				},
-				"deletePost": {
-					"success": "Post deleted successfully.",
-					"error": "An error occurred while deleting the post. Please try again."
-				},
-				"vote": {
-					"success": "Post voted successfully.",
-					"error": "An error occurred while voting for the post. Please try again.",
-					"deleteSuccess": "Vote removed successfully.",
-					"deleteError": "An error occurred while removing the vote. Please try again."
+					"submit": "Post"
 				},
 				"emptyState": {
 					"title": "No posts yet",
 					"description": "What are you waiting for? Start sharing your thoughts with the world!"
-				},
-				"errors": {
-					"generic": "An error occurred while fetching posts. Please try again."
 				}
 			}
 		},
