@@ -6,8 +6,7 @@
 		"moduleResolution": "NodeNext",
 		"outDir": "dist",
 		"paths": {
-			"@/*": ["./src/*"],
-			"@shared/*": ["./src/shared/*"]
+			"@/*": ["./src/*"]
 		}
 	},
 	"tsc-alias": {

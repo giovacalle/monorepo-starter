@@ -2,14 +2,15 @@ import { Hono } from 'hono';
 import { describeRoute } from 'hono-openapi';
 import { resolver, validator } from 'hono-openapi/valibot';
 import { getSessionByToken } from '@monorepo-starter/api-kit/auth';
-import { db, and, eq } from '@monorepo-starter/db';
-import { postsVotes } from '@monorepo-starter/db/schema';
+import { validateAuthHeader, validatePathParams } from '@monorepo-starter/api-kit/validators';
 import {
 	authHeaderSchema,
 	notAuthorizedResponseSchema,
 	notFoundResponseSchema,
 	numericPostIdParamSchema
-} from '@/shared/schemas';
+} from '@monorepo-starter/api-kit/schemas';
+import { db, and, eq } from '@monorepo-starter/db';
+import { postsVotes } from '@monorepo-starter/db/schema';
 
 export const deletePostsVotesRouter = new Hono();
 
@@ -39,16 +40,8 @@ deletePostsVotesRouter.delete(
 			}
 		}
 	}),
-	validator('header', authHeaderSchema, (result, c) => {
-		if (result.success === false) {
-			return c.json({ message: 'Authorization header with Bearer token is required' }, 401);
-		}
-	}),
-	validator('param', numericPostIdParamSchema, (result, c) => {
-		if (result.success === false) {
-			return c.json({ message: 'Schema not valid', errors: result.issues }, 400);
-		}
-	}),
+	validator('header', authHeaderSchema, validateAuthHeader),
+	validator('param', numericPostIdParamSchema, validatePathParams),
 	async (c) => {
 		const token = c.req.valid('header').authorization!.replace('Bearer ', '');
 

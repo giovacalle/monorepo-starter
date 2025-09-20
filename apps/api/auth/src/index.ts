@@ -23,14 +23,6 @@ app.use(
 	})
 );
 app.use('*', createTimeoutMiddleware());
-app.use(
-	'*',
-	createRateLimitMiddleware({
-		service: 'auth',
-		windowMs: 60 * 1000, // 1 minute,
-		max: 60 // max 1 request per second
-	})
-);
 
 app.use(
 	'/email-otp/send-verification-otp',

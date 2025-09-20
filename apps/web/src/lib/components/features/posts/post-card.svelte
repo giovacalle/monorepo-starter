@@ -24,7 +24,7 @@
 		userVote
 	}: GetApiV1Posts200Item = $props();
 
-	let userVoteState = $state(userVote);
+	let userVoteState = $state(userVote ?? 0);
 	let upvotesCountState = $state(upvotesCount);
 	let downvotesCountState = $state(downvotesCount);
 
@@ -57,7 +57,12 @@
 	const deleteVotePost = createDeleteApiV1PostsVotesByPostId({
 		mutation: {
 			onSuccess: () => {
-				userVoteState = undefined;
+				if (userVoteState === 1) {
+					upvotesCountState = Math.max(upvotesCountState - 1, 0);
+				} else if (userVoteState === -1) {
+					downvotesCountState = Math.max(downvotesCountState - 1, 0);
+				}
+				userVoteState = 0;
 			}
 		}
 	});

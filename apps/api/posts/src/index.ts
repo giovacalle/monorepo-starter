@@ -3,8 +3,7 @@ import {
 	createCorsMiddleware,
 	createRequestIdMiddleware,
 	createTimeoutMiddleware,
-	createSecurityMiddleware,
-	createRateLimitMiddleware
+	createSecurityMiddleware
 } from '@monorepo-starter/api-kit/middlewares';
 import { openAPISpecs } from 'hono-openapi';
 import { swaggerUI } from '@hono/swagger-ui';
@@ -25,14 +24,6 @@ app.use(
 	})
 );
 app.use('*', createTimeoutMiddleware());
-app.use(
-	'*',
-	createRateLimitMiddleware({
-		service: 'posts',
-		windowMs: 60 * 1000, // 1 minute,
-		max: 60 // max 1 request per second
-	})
-);
 
 app
 	.get(

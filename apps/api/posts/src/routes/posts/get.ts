@@ -3,14 +3,15 @@ import { Hono } from 'hono';
 import { describeRoute } from 'hono-openapi';
 import { resolver, validator } from 'hono-openapi/valibot';
 import { getSessionByToken } from '@monorepo-starter/api-kit/auth';
-import { db, and, eq, desc } from '@monorepo-starter/db';
-import { user, posts, postsVotes } from '@monorepo-starter/db/schema';
+import { validateQueryParams, validatePathParams } from '@monorepo-starter/api-kit/validators';
 import {
 	authOptionalHeaderSchema,
 	badRequestResponseSchema,
 	notFoundResponseSchema,
 	numericIdParamSchema
-} from '@/shared/schemas';
+} from '@monorepo-starter/api-kit/schemas';
+import { db, and, eq, desc } from '@monorepo-starter/db';
+import { user, posts, postsVotes } from '@monorepo-starter/db/schema';
 
 const querySchema = v.object({
 	page: v.optional(
@@ -82,11 +83,7 @@ getPostsRouter
 				}
 			}
 		}),
-		validator('query', querySchema, (result, c) => {
-			if (result.success === false) {
-				return c.json({ message: 'Schema not valid', errors: result.issues }, 400);
-			}
-		}),
+		validator('query', querySchema, validateQueryParams),
 		validator('header', authOptionalHeaderSchema), // No callback = always passes
 		async (c) => {
 			const { page = 1, limit = 10 } = c.req.valid('query');
@@ -118,7 +115,6 @@ getPostsRouter
 				})
 				.from(posts)
 				.innerJoin(user, eq(posts.authorId, user.id))
-				// INFO: not sure this is the best way to handle optional user votes
 				.leftJoin(
 					postsVotes,
 					and(
@@ -161,11 +157,7 @@ getPostsRouter
 				}
 			}
 		}),
-		validator('param', numericIdParamSchema, (result, c) => {
-			if (result.success === false) {
-				return c.json({ message: 'Schema not valid', errors: result.issues }, 400);
-			}
-		}),
+		validator('param', numericIdParamSchema, validatePathParams),
 		validator('header', authOptionalHeaderSchema),
 		async (c) => {
 			const { id } = c.req.valid('param');
@@ -197,7 +189,6 @@ getPostsRouter
 				})
 				.from(posts)
 				.innerJoin(user, eq(posts.authorId, user.id))
-				// INFO: not sure this is the best way to handle optional user votes
 				.leftJoin(
 					postsVotes,
 					and(eq(postsVotes.postId, id), eq(postsVotes.userId, userSession?.session.userId ?? '-'))
