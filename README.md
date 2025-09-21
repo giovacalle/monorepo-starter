@@ -20,7 +20,7 @@ If you find any issues or have suggestions, feel free to open an issue or a pull
 - **Frontend:** SvelteKit (TypeScript)
 - **UI:** bits-ui, tailwindcss, iconify
 - **API:** Hono (TypeScript, ESM), orval (openapi generator), tanstack-query
-- **DB/ORM:** PostgreSQL, Drizzle ORM
+- **DB/ORM:** PostgreSQL, Drizzle ORM, Redis
 - **Authentication:** better-auth (email OTP verification, Google OAuth)
 - **Email:** react-email (+ Resend as email service)
 - **Dev tools:** eslint, prettier, husky, lint-staged, commitlint
@@ -70,7 +70,16 @@ packages/
      pnpm docker-compose:up --init-db
      ```
 
-3. **Google OAuth**
+3. **Redis**
+   - Install and run Redis locally or use a cloud provider (e.g., Redis Cloud, Upstash)
+   - Add the Redis connection string to your environment variables:
+     ```
+     REDIS_URL=redis://localhost:6379
+     # or for cloud Redis:
+     REDIS_URL=redis://username:password@host:port
+     ```
+
+4. **Google OAuth**
 
    In order to use `Google OAuth`, you will need to:
    1. **Create a Google Cloud Project**
@@ -91,7 +100,7 @@ packages/
 
    4. Insert the **Client ID** and **Client Secret** into the environment variables (`GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`) (in pocketbase env file).
 
-4. **Email templates**
+5. **Email templates**
 
    In `transactional` package, you can find the email templates built with [react-email](https://react.email/).
    For the sake of simplicity, Resend is used as the email service, but you can adapt it to your preferred service.
@@ -105,7 +114,7 @@ packages/
 
    4. In the `FROM_EMAIL` env variable, insert the email address from which emails will be sent (in the templates you will see that the `from` field is optional, so you can customize it as needed. By default, it will use the `FROM_EMAIL` variable)
 
-5. **Build and deploy**
+6. **Build and deploy**
 
    For this type of projects I really like to use [Railway](https://railway.app/), that is very integrated with Docker and GitHub CI/CD, but you can also use your preferred cloud provider.
 
